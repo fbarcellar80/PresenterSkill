@@ -1,0 +1,9 @@
+{
+  "name": "presenter-slides",
+  "version": "0.1.0",
+  "description": "Gera apresentações de slides modernas, responsivas e interativas (HTML/CSS/JS) com planejamento, paletas claro/escuro, gráficos e simuladores interativos.",
+  "author": { "name": "fbarcellar80" },
+  "repository": "https://github.com/fbarcellar80/PresenterSkill",
+  "license": "MIT",
+  "keywords": ["slides", "presentation", "html", "interactive", "charts", "education", "skill"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "presenter-skill",
+  "owner": { "name": "fbarcellar80" },
+  "metadata": { "description": "Skills para criar apresentações interativas com Claude" },
+  "plugins": [
+    {
+      "name": "presenter-slides",
+      "source": "./",
+      "description": "Apresentações HTML interativas: planejamento, design claro/escuro, gráficos, simuladores e navegação por teclado/clicker.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["slides", "presentation", "interactive"]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<section class="slide" id="imc" data-title="IMC"><div class="slide-head"><h2>Calculadora de IMC</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title": "Calculadora de IMC",
+  "params": [{"id":"m","label":"Peso","min":40,"max":150,"step":1,"value":70,"suffix":" kg","format":"int"},
+             {"id":"h","label":"Altura","min":1.4,"max":2.1,"step":0.01,"value":1.72,"suffix":" m","format":"num:2"}],
+  "outputs": [{"label":"IMC","expr":"m/h^2","format":"num:1","color":1}],
+  "insight": "Com {m|int} kg e {h|num:2} m, o IMC é {m/h^2|num:1}." }
+</script></div><aside class="notes">n</aside></section>
+<section class="slide" id="parabola" data-title="Parábola"><div class="slide-head"><h2>Parábola</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title": "Parábola y = ax² + bx + c",
+  "params": [{"id":"a","label":"a","min":-3,"max":3,"step":0.1,"value":1,"format":"num:1"},
+             {"id":"b","label":"b","min":-6,"max":6,"step":0.1,"value":-2,"format":"num:1"},
+             {"id":"c","label":"c","min":-6,"max":6,"step":0.1,"value":-1,"format":"num:1"}],
+  "defs": {"f": "a*x^2+b*x+c"},
+  "x": {"min": -6, "max": 6, "label": "x"}, "y": {"min": -10, "max": 10, "label": "f(x)"},
+  "series": [{"id":"f","label":"f(x)","expr":"f(x)"}],
+  "markers": [{"x":"-b/(2*a)","y":"f(-b/(2*a))","label":"vértice"}],
+  "outputs": [{"label":"Vértice x","expr":"-b/(2*a)","format":"num:2"},{"label":"Δ","expr":"b^2-4*a*c","format":"num:1","color":2}] }
+</script></div></section>
+<section class="slide" id="binomial" data-title="Binomial"><div class="slide-head"><h2>Binomial</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title":"Binomial", "params": [{"id":"n","label":"Tentativas","min":5,"max":60,"step":1,"value":20},{"id":"p","label":"p","min":0.05,"max":0.95,"step":0.05,"value":0.5,"format":"num:2"}],
+  "x": {"min": -1, "max": "n+1", "label": "Sucessos"},
+  "series": [{"label":"P(X=k)","style":"bars","discrete":[0,"n"],"expr":"comb(n,x)*p^x*(1-p)^(n-x)"}],
+  "outputs": [{"label":"Média n·p","expr":"n*p","format":"num:1"}] }
+</script></div></section>
+<section class="slide" id="onda" data-title="Onda"><div class="slide-head"><h2>Onda</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title":"Onda viajante", "params":[{"id":"t","label":"Tempo","min":0,"max":6.28,"step":0.01,"value":0,"format":"num:2"}],
+  "play":{"param":"t","speed":0.15}, "x":{"min":0,"max":12.56,"label":"x"}, "y":{"min":-1.5,"max":1.5},
+  "series":[{"label":"sin(x - t)","expr":"sin(x - t)"}] }
+</script></div></section>
+<section class="slide" id="fourier" data-title="Fourier"><div class="slide-head"><h2>Fourier</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title":"Onda quadrada por Fourier", "params":[{"id":"N","label":"Harmônicos","min":1,"max":25,"step":1,"value":3,"format":"int"}],
+  "x":{"min":-6.28,"max":6.28}, "y":{"min":-1.6,"max":1.6},
+  "series":[{"label":"soma","expr":"sum(4/pi*sin((2*k-1)*x)/(2*k-1), k, 1, N)"},{"label":"alvo","expr":"if(sin(x)>=0,1,-1)","dash":true,"color":"c2"}] }
+</script></div></section>
+<section class="slide" id="param" data-title="Paramétrica"><div class="slide-head"><h2>Paramétrica</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title":"Lissajous", "params":[{"id":"a","label":"a","min":1,"max":5,"step":1,"value":3,"format":"int"}],
+  "x":{"min":-1.2,"max":1.2}, "y":{"min":-1.2,"max":1.2},
+  "series":[{"label":"curva","parametric":{"x":"cos(a*t)","y":"sin(t)","t":[0,6.2832]}}] }
+</script></div></section>
+<section class="slide" id="deriv" data-title="Derivada"><div class="slide-head"><h2>Derivada e integral</h2></div>
+<div class="widget" data-widget="lab"><script type="application/json">
+{ "title":"f e f'", "params":[{"id":"u","label":"Limite superior","min":0.5,"max":3,"step":0.1,"value":2,"format":"num:1"}],
+  "defs":{"f":"x^3-3*x"}, "x":{"min":-3,"max":3}, "y":{"min":-8,"max":8},
+  "series":[{"label":"f","expr":"f(x)"},{"label":"f'","expr":"deriv(f,x)","color":"c2","dash":true,"shade":{"from":0,"to":"u"}}],
+  "outputs":[{"label":"∫ f de 0 a u","expr":"integ(f,0,u)","format":"num:3"}] }
+</script></div></section>

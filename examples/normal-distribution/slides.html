@@ -1,0 +1,148 @@
+<!-- 1. TITLE -->
+<section class="slide layout-title" id="title" data-title="The Normal Distribution" data-icon="activity" data-section="Intro" data-bg="grid">
+  <div class="slide-body">
+    <span class="eyebrow" data-anim="up">Statistics · Interactive lesson</span>
+    <h1 data-anim="up">The <span class="grad">Normal</span> Distribution</h1>
+    <p class="lead" data-anim="up">Why so many things in nature, measurement and data cluster around an average — and how to read the bell curve with confidence.</p>
+    <div class="row-wrap" data-anim="up"><span class="badge"><i data-icon="sigma"></i> mean &amp; spread</span><span class="badge b2"><i data-icon="flask"></i> live simulations</span><span class="badge b3"><i data-icon="target"></i> z-scores</span></div>
+  </div>
+  <aside class="notes">Ask: "what do heights, exam scores and measurement errors have in common?"</aside>
+</section>
+
+<!-- 2. WHY -->
+<section class="slide" id="why" data-title="68 – 95 – 99.7" data-icon="target" data-section="Intro">
+  <div class="slide-head"><span class="eyebrow">The empirical rule</span><h2>Three numbers describe almost every bell curve</h2></div>
+  <div class="stats">
+    <div class="stat"><span class="value"><span class="counter" data-to="68.27" data-format="num:1" data-suffix="%">68.3%</span></span><span class="label">within <b>1σ</b> of the mean</span></div>
+    <div class="stat"><span class="value"><span class="counter" data-to="95.45" data-format="num:1" data-suffix="%">95.4%</span></span><span class="label">within <b>2σ</b></span></div>
+    <div class="stat"><span class="value"><span class="counter" data-to="99.73" data-format="num:1" data-suffix="%">99.7%</span></span><span class="label">within <b>3σ</b> <button class="goto-btn" data-goto="explore" aria-label="Explore this interactively"></button></span></div>
+  </div>
+  <p class="lead">σ ("sigma") is the <span class="term" data-tip="Typical distance of values from the mean.">standard deviation</span>. Next, you will move the curve yourself.</p>
+</section>
+
+<!-- 3. ANATOMY (SVG + hotspots) -->
+<section class="slide" id="anatomy" data-title="Anatomy of the curve" data-icon="eye" data-section="Concepts">
+  <div class="slide-head"><span class="eyebrow">Concepts</span><h2>Anatomy of a bell curve — tap the numbered dots</h2></div>
+  <div class="split wide-visual">
+    <ul class="bullets">
+      <li data-step><strong>1 · Mean (μ)</strong> — the centre and the peak.</li>
+      <li data-step><strong>2 · Standard deviation (σ)</strong> — the width of the bell.</li>
+      <li data-step><strong>3 · Tails</strong> — rare, extreme values.</li>
+    </ul>
+    <div class="hotspot-layer">
+      <svg class="diagram" viewBox="0 0 600 300" role="img" aria-label="Bell curve with mean, standard deviation and tails highlighted">
+        <defs><linearGradient id="bell-g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.4"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:.02"/></linearGradient></defs>
+        <path d="M20 260 C120 258 200 240 250 150 C275 105 285 40 300 40 C315 40 325 105 350 150 C400 240 480 258 580 260 Z" fill="url(#bell-g)"/>
+        <path d="M20 260 C120 258 200 240 250 150 C275 105 285 40 300 40 C315 40 325 105 350 150 C400 240 480 258 580 260" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+        <line class="dg-edge dash" x1="300" y1="40" x2="300" y2="260"/><line class="dg-edge a1" x1="20" y1="260" x2="580" y2="260"/>
+        <path class="dg-edge a1" d="M300 200 H372" marker-end="url(#ps-arrow-accent)"/>
+        <text x="300" y="282" text-anchor="middle" style="font-weight:700">μ</text><text x="372" y="282" text-anchor="middle" class="dg-sub">μ + σ</text>
+      </svg>
+      <button class="hotspot" style="--x:50%;--y:12%" data-detail="d-mean" aria-label="About the mean">1</button>
+      <button class="hotspot" style="--x:62%;--y:62%" data-detail="d-sigma" aria-label="About sigma">2</button>
+      <button class="hotspot" style="--x:90%;--y:84%" data-detail="d-tails" aria-label="About the tails">3</button>
+    </div>
+  </div>
+  <template id="d-mean"><h3>Mean (μ)</h3><p>The balance point of the distribution. In a normal curve, mean, median and mode are <strong>equal</strong> — the curve is perfectly symmetric.</p></template>
+  <template id="d-sigma"><h3>Standard deviation (σ)</h3><p>Small σ → tall, narrow bell. Large σ → low, wide bell.</p><a class="xref" data-goto="explore">Change σ yourself</a></template>
+  <template id="d-tails"><h3>Tails</h3><p>The tails never touch zero. Values beyond <strong>3σ</strong> happen in only ~0.3% of cases — useful for spotting outliers.</p></template>
+</section>
+
+<!-- 4. EXPLORE (LAB with shading) -->
+<section class="slide" id="explore" data-title="Explore μ, σ and k" data-icon="settings" data-section="Concepts">
+  <div class="slide-head"><span class="eyebrow">Interactive</span><h2>Move the bell. Watch the area.</h2></div>
+  <div class="widget" data-widget="lab">
+    <script type="application/json">
+    {
+      "title": "IQ-style scores · N(μ, σ)",
+      "params": [
+        {"id": "mu", "label": "Mean μ", "min": 70, "max": 130, "step": 1, "value": 100, "format": "int"},
+        {"id": "sigma", "label": "Std. deviation σ", "min": 5, "max": 30, "step": 1, "value": 15, "format": "int"},
+        {"id": "k", "label": "Band ± k·σ", "min": 0.5, "max": 3, "step": 0.1, "value": 1, "format": "num:1"}
+      ],
+      "defs": {"f": "normpdf(x, mu, sigma)"},
+      "x": {"min": 20, "max": 180, "label": "Score"},
+      "y": {"min": 0, "max": 0.085, "label": "Density", "format": "num:3"},
+      "series": [{"id": "pdf", "label": "Density", "expr": "f(x)", "color": "c1", "shade": {"from": "mu-k*sigma", "to": "mu+k*sigma"}}],
+      "vlines": [{"x": "mu", "label": "μ"}],
+      "outputs": [
+        {"label": "Inside band", "expr": "normcdf(mu+k*sigma, mu, sigma) - normcdf(mu-k*sigma, mu, sigma)", "format": "percent:1"},
+        {"label": "From", "expr": "mu-k*sigma", "format": "num:1"},
+        {"label": "To", "expr": "mu+k*sigma", "format": "num:1", "color": 3}
+      ],
+      "insight": "With σ = {sigma|int}, {normcdf(mu+k*sigma, mu, sigma) - normcdf(mu-k*sigma, mu, sigma)|percent:1} of scores fall between {mu-k*sigma|num:1} and {mu+k*sigma|num:1}."
+    }
+    </script>
+  </div>
+  <aside class="notes">Set k = 1, 2, 3 and compare with the 68–95–99.7 rule.</aside>
+</section>
+
+<!-- 5. CLT (sampler) -->
+<section class="slide" id="clt" data-title="Central Limit Theorem" data-icon="flask" data-section="Why it appears">
+  <div class="slide-head"><span class="eyebrow">Why it appears</span><h2>Average enough random values and a bell curve emerges</h2></div>
+  <div class="widget" data-widget="sampler">
+    <script type="application/json">
+    { "title": "Central Limit Theorem lab", "dist": "exponential", "average": 1, "initial": 600,
+      "caption": "Start with k = 1 on a skewed distribution. Increase k (the number of values averaged) and press “Draw 500”." }
+    </script>
+  </div>
+</section>
+
+<!-- 6. z-score calculator -->
+<section class="slide" id="zscore" data-title="z-scores" data-icon="calculator" data-section="Applying it">
+  <div class="slide-head"><span class="eyebrow">Applying it</span><h2>A z-score tells you how unusual a value is</h2></div>
+  <div class="split">
+    <div class="stack">
+      <p class="formula">z = (x − μ) / σ</p>
+      <p class="muted">Positive z: above average. Negative z: below. |z| &gt; 2 is unusual; |z| &gt; 3 is rare. <a class="xref" data-goto="explore">See the bands</a></p>
+    </div>
+    <div class="widget" data-widget="lab">
+      <script type="application/json">
+      {
+        "title": "z-score & percentile",
+        "params": [
+          {"id": "x0", "label": "Your value x", "min": 40, "max": 160, "step": 1, "value": 125, "format": "int"},
+          {"id": "mu", "label": "Mean μ", "min": 70, "max": 130, "step": 1, "value": 100, "format": "int"},
+          {"id": "sigma", "label": "Std. deviation σ", "min": 5, "max": 30, "step": 1, "value": 15, "format": "int"}
+        ],
+        "outputs": [
+          {"label": "z-score", "expr": "(x0-mu)/sigma", "format": "num:2"},
+          {"label": "Percentile", "expr": "normcdf(x0, mu, sigma)", "format": "percent:1", "color": 2},
+          {"label": "Rarer than", "expr": "1 - (normcdf(abs(x0-mu)/sigma) - normcdf(-abs(x0-mu)/sigma))", "format": "percent:1", "color": 3}
+        ],
+        "insight": "x = {x0|int} is {(x0-mu)/sigma|num:2} standard deviations from the mean — higher than {normcdf(x0, mu, sigma)|percent:1} of the population."
+      }
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- 7. real data (scatter + switch) -->
+<section class="slide" id="data" data-title="Real-looking data" data-icon="bar-chart" data-section="Applying it">
+  <div class="slide-head"><span class="eyebrow">Data</span><h2>Heights and weights: two bell curves in one scatter</h2></div>
+  <div class="widget" data-widget="chart">
+    <script type="application/json">
+    { "title": "Sample of 36 adults", "type": "scatter", "xlabel": "Height (cm)", "ylabel": "Weight (kg)", "format": "num:1",
+      "series": [{"label": "Adults", "data": [[167.7, 65.5], [168.0, 61.6], [161.6, 56.4], [180.0, 76.1], [179.3, 74.6], [173.6, 69.2], [155.0, 55.8], [174.6, 71.6], [154.8, 42.6], [162.0, 55.5], [172.7, 67.2], [174.7, 66.0], [172.8, 69.5], [164.0, 68.2], [175.0, 75.5], [164.4, 56.3], [166.9, 61.7], [175.7, 71.4], [166.0, 56.6], [165.3, 66.9], [162.7, 59.7], [173.8, 61.0], [170.4, 71.9], [151.9, 47.1], [169.0, 60.0], [174.5, 68.7], [156.8, 57.3], [176.0, 75.1], [183.0, 78.5], [171.1, 59.5], [175.5, 66.9], [165.9, 55.0], [161.3, 54.5], [181.6, 65.3], [156.9, 54.4], [183.0, 79.6]], "color": "c1"}],
+      "caption": "Hover (or tap) the plot to inspect values. Most points sit near the average of both variables." }
+    </script>
+  </div>
+</section>
+
+<!-- 8. quiz / closing -->
+<section class="slide layout-closing" id="end" data-title="Check yourself" data-icon="flag" data-section="Wrap-up">
+  <div class="slide-body">
+    <span class="eyebrow">Check yourself</span>
+    <div class="widget" data-widget="quiz">
+      <script type="application/json">
+      { "question": "Scores are N(100, 15). Roughly what share of people score between 70 and 130?",
+        "options": [
+          {"text": "About 68%", "why": "That is the ±1σ band (85–115)."},
+          {"text": "About 95%", "correct": true, "why": "70 and 130 are 2σ away from the mean, so ≈ 95% fall in between."},
+          {"text": "About 99.7%", "why": "That would be ±3σ (55–145)."}
+        ] }
+      </script>
+    </div>
+    <p class="muted">Press <kbd>O</kbd> for the overview · <kbd>T</kbd> to switch theme · <kbd>?</kbd> for shortcuts.</p>
+  </div>
+</section>

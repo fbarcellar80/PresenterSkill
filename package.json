@@ -1,0 +1,16 @@
+{
+  "name": "presenter-slides",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Skill para Claude que gera apresentações HTML interativas, responsivas e acessíveis (ferramentas de desenvolvimento e testes).",
+  "license": "MIT",
+  "scripts": {
+    "test": "python3 -m unittest discover -s tests -t . && node --test tests/math.test.cjs",
+    "test:e2e": "node tests/e2e.cjs",
+    "examples": "make examples",
+    "qa:examples": "make qa"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}
