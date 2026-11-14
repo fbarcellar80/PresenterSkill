@@ -1,0 +1,279 @@
+<!-- ============ 1. CAPA ============ -->
+<section class="slide layout-title" id="capa" data-title="Capa" data-icon="trending-up" data-section="Introdução">
+  <div class="slide-body">
+    <div class="split wide-visual">
+      <div class="stack">
+        <span class="eyebrow" data-anim="up">Educação financeira · 10 min</span>
+        <h1 data-anim="up"><span class="grad">Juros compostos:</span> o poder do tempo</h1>
+        <p class="lead" data-anim="up">Por que R$ 1.000 podem virar R$ 17 mil — e por que uma dívida pequena vira um monstro. Aqui você <strong>mexe nos números</strong> e vê a curva responder.</p>
+        <div class="meta" data-anim="up"><span><i data-icon="clock"></i> 10 slides</span><span><i data-icon="calculator"></i> 3 simuladores</span><span><i data-icon="keyboard"></i> Use ← → para navegar</span></div>
+      </div>
+      <figure class="media" data-anim="zoom" aria-label="Ilustração de curva exponencial">
+        <svg class="art" viewBox="0 0 480 340" role="img" aria-label="Curva exponencial crescente sobre grade">
+          <defs>
+            <linearGradient id="capa-g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.35"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient>
+          </defs>
+          <g stroke="var(--border)" stroke-width="1"><path d="M40 300H460M40 240H460M40 180H460M40 120H460M40 60H460"/></g>
+          <path d="M40 290 C140 285 230 260 300 200 S 410 70 450 30 L450 300 L40 300Z" fill="url(#capa-g)"/>
+          <path d="M40 290 C140 285 230 260 300 200 S 410 70 450 30" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M40 290 L450 150" fill="none" stroke="var(--accent2)" stroke-width="4" stroke-dasharray="3 9" stroke-linecap="round"/>
+          <circle cx="450" cy="30" r="9" fill="var(--accent3)"/>
+          <text x="330" y="52" style="font:700 15px var(--font-head);fill:var(--text)">compostos</text>
+          <text x="300" y="168" style="font:700 15px var(--font-head);fill:var(--muted)">simples</text>
+        </svg>
+      </figure>
+    </div>
+  </div>
+  <aside class="notes">Abra com a pergunta: "alguém aqui prefere R$ 1 milhão hoje ou 1 centavo dobrando por 30 dias?". Use isso como gancho para a curva exponencial.</aside>
+</section>
+
+<!-- ============ 2. IMPACTO ============ -->
+<section class="slide" id="impacto" data-title="Por que importa" data-icon="target" data-section="Introdução">
+  <div class="slide-head">
+    <span class="eyebrow">Por que importa</span>
+    <h2>O tempo trabalha a seu favor — ou contra você</h2>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="value"><span class="counter" data-to="17449" data-format="currency:0">R$ 17.449</span></span><span class="label">R$ 1.000 a 10% a.a. durante 30 anos</span><span class="delta">+1.645%</span></div>
+    <div class="stat"><span class="value"><span class="counter" data-to="72" data-suffix=" anos">72</span></span><span class="label">tempo para dobrar a 1% ao ano <button class="goto-btn" data-goto="regra72" aria-label="Ver a regra dos 72"></button></span></div>
+    <div class="stat"><span class="value"><span class="counter" data-to="2.0" data-format="num:1" data-suffix="%">2,0%</span></span><span class="label">ao mês parece pouco… mas é <strong>26,8% ao ano</strong> <button class="info-btn" data-detail="d-equiv" aria-label="Como converter taxa mensal em anual"></button></span><span class="delta down">dívida</span></div>
+  </div>
+  <div class="callout" data-step><i data-icon="lightbulb"></i><p>A diferença entre <strong>juros simples</strong> e <strong>compostos</strong> é que, nos compostos, os juros também rendem juros. <a class="xref" data-goto="simples-vs-compostos">Ver a comparação →</a></p></div>
+  <template id="d-equiv">
+    <h3>Taxas equivalentes</h3>
+    <p>Uma taxa mensal <code>i<sub>m</sub></code> equivale a uma taxa anual <code>i<sub>a</sub></code> assim:</p>
+    <p class="formula">(1 + i_a) = (1 + i_m)^12</p>
+    <p>Para 2% a.m.: <code>1,02^12 − 1 = 26,82%</code> a.a. — não 24%. É o efeito composto.</p>
+  </template>
+  <aside class="notes">Deixe os contadores animarem. Pergunte à plateia qual dos três números mais surpreende.</aside>
+</section>
+
+<!-- ============ 3. SIMPLES vs COMPOSTOS (LAB) ============ -->
+<section class="slide" id="simples-vs-compostos" data-title="Simples vs. compostos" data-icon="line-chart" data-section="Conceito">
+  <div class="slide-head">
+    <span class="eyebrow">Conceito</span>
+    <h2>Juros simples crescem em linha reta; compostos, em curva
+      <button class="info-btn" data-detail="d-simples" aria-label="O que são juros simples?"></button></h2>
+  </div>
+  <div class="widget" data-widget="lab">
+    <script type="application/json">
+    {
+      "title": "Simule: quanto rende o seu capital?",
+      "icon": "calculator",
+      "currency": "BRL",
+      "params": [
+        {"id": "C", "label": "Capital inicial", "min": 500, "max": 20000, "step": 500, "value": 5000, "format": "currency:0"},
+        {"id": "i", "label": "Taxa mensal", "min": 0.2, "max": 3, "step": 0.1, "value": 1, "format": "num:1", "suffix": "% a.m."},
+        {"id": "n", "label": "Prazo", "min": 6, "max": 120, "step": 6, "value": 48, "format": "int", "suffix": " meses"}
+      ],
+      "defs": {"simples": "C*(1+i/100*x)", "comp": "C*(1+i/100)^x"},
+      "x": {"min": 0, "max": "n", "label": "Meses"},
+      "y": {"label": "Montante", "format": "currency:0", "min": 0},
+      "series": [
+        {"id": "s", "label": "Juros simples", "expr": "simples(x)", "color": "c2", "dash": true},
+        {"id": "c", "label": "Juros compostos", "expr": "comp(x)", "color": "c1"}
+      ],
+      "markers": [{"x": "n", "y": "comp(n)", "label": "hoje + n meses", "color": "accent3"}],
+      "outputs": [
+        {"label": "Simples", "expr": "simples(n)", "format": "currency:0"},
+        {"label": "Compostos", "expr": "comp(n)", "format": "currency:0"},
+        {"label": "Diferença", "expr": "comp(n)-simples(n)", "format": "currency:0", "color": 3}
+      ],
+      "insight": "Em {n} meses a {i|num:1}% ao mês, os compostos rendem {comp(n)-simples(n)|currency:0} a mais que os simples."
+    }
+    </script>
+  </div>
+  <template id="d-simples">
+    <h3>Juros simples</h3>
+    <p>Os juros são calculados <strong>sempre sobre o capital inicial</strong>: <code>M = C · (1 + i · n)</code>.</p>
+    <p>É uma <em>função linear</em> do tempo — por isso o gráfico é uma reta.</p>
+    <a class="xref" data-goto="formula">Ir para a fórmula dos compostos</a>
+  </template>
+  <aside class="notes">Peça para alguém sugerir valores. Aumente o prazo para 120 meses e deixe a diferença "explodir".</aside>
+</section>
+
+<!-- ============ 4. FÓRMULA (CALCULADORA) ============ -->
+<section class="slide" id="formula" data-title="A fórmula" data-icon="sigma" data-section="Conceito">
+  <div class="slide-head">
+    <span class="eyebrow">A matemática</span>
+    <h2>Uma fórmula, três ideias</h2>
+  </div>
+  <div class="split">
+    <div class="stack">
+      <p class="formula" data-anim="up">M = C · (1 + i)<sup>n</sup></p>
+      <ul class="bullets">
+        <li data-step><strong>C</strong> — capital inicial <button class="info-btn" data-detail="d-c" aria-label="Sobre o capital"></button></li>
+        <li data-step><strong>i</strong> — taxa <span class="term" data-tip="Precisa estar na mesma unidade de tempo que n: taxa mensal com n em meses.">na mesma unidade de n</span></li>
+        <li data-step><strong>n</strong> — número de períodos</li>
+      </ul>
+      <p class="muted small">Quer ver o lado "linha reta"? <a class="xref" data-goto="simples-vs-compostos">Voltar à comparação</a></p>
+    </div>
+    <div class="widget" data-widget="lab">
+      <script type="application/json">
+      {
+        "title": "Calculadora de montante",
+        "icon": "calculator",
+        "params": [
+          {"id": "C", "label": "Capital (C)", "min": 1000, "max": 50000, "step": 1000, "value": 10000, "format": "currency:0"},
+          {"id": "i", "label": "Taxa anual (i)", "min": 1, "max": 20, "step": 0.5, "value": 8, "format": "num:1", "suffix": "% a.a."},
+          {"id": "n", "label": "Anos (n)", "min": 1, "max": 40, "step": 1, "value": 20, "format": "int", "suffix": " anos"}
+        ],
+        "outputs": [
+          {"label": "Montante final (M)", "expr": "C*(1+i/100)^n", "format": "currency:0", "color": 1},
+          {"label": "Só de juros", "expr": "C*(1+i/100)^n - C", "format": "currency:0", "color": 2},
+          {"label": "Multiplicou por", "expr": "(1+i/100)^n", "format": "num:2", "suffix": "×", "color": 3}
+        ],
+        "insight": "{C|currency:0} a {i|num:1}% ao ano por {n} anos viram {C*(1+i/100)^n|currency:0}."
+      }
+      </script>
+    </div>
+  </div>
+  <template id="d-c"><h3>Capital inicial (C)</h3><p>É o valor aplicado (ou emprestado) no instante zero. Dobrar <code>C</code> dobra o resultado — mas dobrar <code>n</code> faz muito mais, porque <code>n</code> é o expoente.</p></template>
+  <aside class="notes">Mostre que n é o expoente: o tempo pesa mais que o capital.</aside>
+</section>
+
+<!-- ============ 5. REGRA DOS 72 ============ -->
+<section class="slide" id="regra72" data-title="Regra dos 72" data-icon="clock" data-section="Atalhos">
+  <div class="slide-head">
+    <span class="eyebrow">Atalho mental</span>
+    <h2>Regra dos 72: quanto tempo para dobrar?</h2>
+    <p class="lead">Divida 72 pela taxa (em %) e tenha uma boa estimativa do tempo para o dinheiro dobrar.</p>
+  </div>
+  <div class="widget" data-widget="lab">
+    <script type="application/json">
+    {
+      "title": "Exato × aproximação",
+      "params": [{"id": "r", "label": "Taxa anual", "min": 1, "max": 20, "step": 0.5, "value": 8, "format": "num:1", "suffix": "% a.a."}],
+      "x": {"min": 1, "max": 20, "label": "Taxa anual (%)"},
+      "y": {"min": 0, "max": 75, "label": "Anos para dobrar", "format": "num:0"},
+      "series": [
+        {"id": "e", "label": "Exato: ln 2 / ln(1+i)", "expr": "ln(2)/ln(1+x/100)", "color": "c1"},
+        {"id": "a", "label": "Regra dos 72", "expr": "72/x", "color": "c2", "dash": true}
+      ],
+      "vlines": [{"x": "r"}],
+      "markers": [{"x": "r", "y": "ln(2)/ln(1+r/100)", "label": "você"}],
+      "outputs": [
+        {"label": "Exato", "expr": "ln(2)/ln(1+r/100)", "format": "num:1", "suffix": " anos"},
+        {"label": "Regra dos 72", "expr": "72/r", "format": "num:1", "suffix": " anos", "color": 3}
+      ],
+      "insight": "A {r|num:1}% ao ano, o dinheiro dobra em cerca de {72/r|num:1} anos (exato: {ln(2)/ln(1+r/100)|num:1})."
+    }
+    </script>
+  </div>
+  <aside class="notes">Mostre que o erro é pequeno entre 6% e 10% — por isso o 72 é "mágico".</aside>
+</section>
+
+<!-- ============ 6. CENÁRIOS (GRÁFICO) ============ -->
+<section class="slide" id="cenarios" data-title="Três cenários" data-icon="bar-chart" data-section="Na prática">
+  <div class="slide-head">
+    <span class="eyebrow">Na prática</span>
+    <h2>Pequenas diferenças de taxa, enormes diferenças de resultado</h2>
+  </div>
+  <div class="widget" data-widget="chart">
+    <script type="application/json">
+    {
+      "title": "R$ 1.000 aplicados por 30 anos",
+      "type": "bar",
+      "switch": ["bar", "line", "area"],
+      "labels": ["Ano 0", "Ano 5", "Ano 10", "Ano 15", "Ano 20", "Ano 25", "Ano 30"],
+      "series": [
+        {"label": "6% a.a.", "data": [1000, 1338, 1791, 2397, 3207, 4292, 5743],  "color": "c3"},
+        {"label": "10% a.a.", "data": [1000, 1611, 2594, 4177, 6727, 10835, 17449], "color": "c1"},
+        {"label": "14% a.a.", "data": [1000, 1925, 3707, 7138, 13743, 26462, 50950], "color": "c2"}
+      ],
+      "format": "currency:0",
+      "caption": "Clique nos itens da legenda para ligar/desligar séries; passe o mouse para ver os valores."
+    }
+    </script>
+  </div>
+  <aside class="notes">Desligue a série de 14% para a comparação 6% × 10% ficar legível.</aside>
+</section>
+
+<!-- ============ 7. DÍVIDA (DONUT) ============ -->
+<section class="slide" id="divida" data-title="O lado da dívida" data-icon="alert" data-section="Na prática">
+  <div class="slide-head">
+    <span class="eyebrow">O outro lado</span>
+    <h2>Quando você é o devedor, a curva trabalha contra você</h2>
+  </div>
+  <div class="split">
+    <div class="widget" data-widget="chart">
+      <script type="application/json">
+      {
+        "title": "Financiamento de R$ 50.000 · 48 meses · 2% a.m.",
+        "type": "donut",
+        "switch": ["donut", "pie", "bar"],
+        "labels": ["Principal", "Juros"],
+        "series": [{"label": "Valor", "data": [50000, 28250]}],
+        "colors": ["c1", "c2"],
+        "format": "currency:0",
+        "centerLabel": "total pago",
+        "height": "short"
+      }
+      </script>
+    </div>
+    <div class="stack">
+      <div class="callout warn" data-step><i data-icon="alert"></i><p>Você paga <strong>≈ R$ 78.250</strong> por um bem de R$ 50.000: mais de <strong>56% de juros</strong> sobre o principal.</p></div>
+      <ul class="checklist">
+        <li data-step>Compare sempre o <strong>custo efetivo total (CET)</strong>.</li>
+        <li data-step>Amortize cedo: cada real antecipado corta juros futuros.</li>
+        <li data-step>Evite rotativo do cartão — taxas acima de 10% a.m. quebram qualquer orçamento.</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">Use "Avançar" para revelar os itens um a um.</aside>
+</section>
+
+<!-- ============ 8. APLICAÇÕES (ABAS) ============ -->
+<section class="slide" id="aplicacoes" data-title="Onde aparece" data-icon="layers" data-section="Na prática">
+  <div class="slide-head"><span class="eyebrow">Aplicações</span><h2>Onde os juros compostos aparecem</h2></div>
+  <div class="widget" data-widget="tabs" data-bare>
+    <section data-tab="Investimentos" data-tab-icon="trending-up">
+      <div class="cards">
+        <div class="card"><h3><span class="icon-badge"><i data-icon="leaf"></i></span> Renda fixa</h3><p>CDB, Tesouro e LCI reinvestem os juros: o efeito composto é automático.</p></div>
+        <div class="card"><h3><span class="icon-badge b2"><i data-icon="bar-chart"></i></span> Ações</h3><p>Reinvestir dividendos acelera a curva no longo prazo.</p></div>
+        <div class="card"><h3><span class="icon-badge b3"><i data-icon="shield"></i></span> Previdência</h3><p>Décadas de aportes mensais: o tempo vira o maior sócio.</p></div>
+      </div>
+    </section>
+    <section data-tab="Dívidas" data-tab-icon="alert">
+      <div class="cards">
+        <div class="card"><h3><span class="icon-badge b3"><i data-icon="dollar"></i></span> Cartão rotativo</h3><p>Juros sobre juros mensais: a dívida dobra em poucos meses.</p></div>
+        <div class="card"><h3><span class="icon-badge b2"><i data-icon="home"></i></span> Financiamentos</h3><p>Prazo longo reduz a parcela, mas multiplica o juro total.</p></div>
+      </div>
+    </section>
+    <section data-tab="Inflação" data-tab-icon="percent">
+      <div class="callout"><i data-icon="info"></i><p>A inflação também é composta: 5% ao ano por 14 anos reduz o poder de compra à <strong>metade</strong>. <a class="xref" data-goto="regra72">Veja a regra dos 72</a>.</p></div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ 9. QUIZ ============ -->
+<section class="slide" id="quiz" data-title="Teste rápido" data-icon="help" data-section="Fixação">
+  <div class="slide-head"><span class="eyebrow">Teste rápido</span><h2>Você pegou a ideia?</h2></div>
+  <div class="widget" data-widget="quiz">
+    <script type="application/json">
+    {
+      "question": "R$ 100 a 10% ao ano, em juros compostos, por 2 anos, resultam em…",
+      "options": [
+        {"text": "R$ 120,00", "why": "Isso é juros simples (100 + 2 × 10). Nos compostos, o segundo ano rende sobre 110."},
+        {"text": "R$ 121,00", "correct": true, "why": "100 × 1,10 × 1,10 = 121. O 'juro sobre juro' foram R$ 1."},
+        {"text": "R$ 110,00", "why": "Esse é o valor depois de apenas 1 ano."},
+        {"text": "R$ 200,00", "why": "Para dobrar a 10% seriam necessários cerca de 7,2 anos (regra dos 72)."}
+      ]
+    }
+    </script>
+  </div>
+</section>
+
+<!-- ============ 10. ENCERRAMENTO ============ -->
+<section class="slide layout-closing" id="fim" data-title="Conclusões" data-icon="flag" data-section="Fechamento">
+  <div class="slide-body">
+    <span class="eyebrow">Para levar</span>
+    <h2 class="grad" style="font-size:2.8rem">Comece cedo, seja constante e fuja das taxas altas</h2>
+    <div class="cards">
+      <div class="card"><h3><span class="icon-badge"><i data-icon="clock"></i></span> Tempo</h3><p>É o expoente. Nada compensa começar tarde.</p><a class="xref" data-goto="formula">rever a fórmula</a></div>
+      <div class="card"><h3><span class="icon-badge b2"><i data-icon="percent"></i></span> Taxa</h3><p>1 ponto a mais muda décadas de resultado.</p><a class="xref" data-goto="cenarios">rever cenários</a></div>
+      <div class="card"><h3><span class="icon-badge b3"><i data-icon="shield"></i></span> Cuidado</h3><p>A mesma matemática que enriquece, endivida.</p><a class="xref" data-goto="divida">rever a dívida</a></div>
+    </div>
+    <p class="muted">Obrigado! Pressione <kbd>O</kbd> para a visão geral ou <kbd>?</kbd> para os atalhos.</p>
+  </div>
+</section>
