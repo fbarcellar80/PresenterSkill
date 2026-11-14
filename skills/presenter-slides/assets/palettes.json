@@ -1,0 +1,57 @@
+{
+  "_doc": "Fonte única das paletas. build_deck.py gera o CSS a partir deste arquivo e tests/test_palettes.py valida contraste WCAG. x4..x6 são cores de gráfico compartilhadas entre claro/escuro (luminância média, >=3:1 nos dois fundos).",
+  "aurora": {
+    "name": "Aurora", "scheme": "análoga (índigo → violeta → ciano)", "mood": "tecnologia, inovação, startups, produto",
+    "x4": "#C46205", "x5": "#059669", "x6": "#E11D48",
+    "light": {"bg": "#F6F7FD", "surface": "#FFFFFF", "surface2": "#ECEEFB", "text": "#11132A", "muted": "#4B5174", "border": "#D8DCF2", "accent": "#4338CA", "accent2": "#0369A1", "accent3": "#A21CAF", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#0C0E1F", "surface": "#151833", "surface2": "#1E2245", "text": "#EEF0FF", "muted": "#A5ABD0", "border": "#2B3060", "accent": "#818CF8", "accent2": "#38BDF8", "accent3": "#E879F9", "onAccent": "#0C0E1F"}
+  },
+  "ocean": {
+    "name": "Oceano", "scheme": "análoga (azul → turquesa) + índigo de apoio", "mood": "corporativo, finanças, saúde, confiança",
+    "x4": "#C46205", "x5": "#7C3AED", "x6": "#E11D48",
+    "light": {"bg": "#F3F8FB", "surface": "#FFFFFF", "surface2": "#E4EFF5", "text": "#0B1F2E", "muted": "#44606F", "border": "#D3E3EC", "accent": "#0369A1", "accent2": "#0F766E", "accent3": "#4F46E5", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#08151F", "surface": "#0F2331", "surface2": "#163247", "text": "#E8F4FB", "muted": "#9CB8C8", "border": "#1F4157", "accent": "#38BDF8", "accent2": "#2DD4BF", "accent3": "#A5B4FC", "onAccent": "#08151F"}
+  },
+  "forest": {
+    "name": "Floresta", "scheme": "análoga (verde → turquesa) + âmbar terroso", "mood": "sustentabilidade, ciência, educação, bem-estar",
+    "x4": "#C46205", "x5": "#2563EB", "x6": "#E11D48",
+    "light": {"bg": "#F4F8F3", "surface": "#FFFFFF", "surface2": "#E7F0E4", "text": "#14231A", "muted": "#4A6153", "border": "#D0E0CC", "accent": "#15803D", "accent2": "#0F766E", "accent3": "#A16207", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#0B1A12", "surface": "#12281B", "surface2": "#1A3826", "text": "#E8F5EC", "muted": "#A0BCA9", "border": "#24472F", "accent": "#4ADE80", "accent2": "#2DD4BF", "accent3": "#FACC15", "onAccent": "#0B1A12"}
+  },
+  "sunset": {
+    "name": "Pôr do sol", "scheme": "análoga quente (laranja → magenta) com toque violeta", "mood": "marketing, criatividade, eventos, storytelling",
+    "x4": "#0E7490", "x5": "#059669", "x6": "#7C3AED",
+    "light": {"bg": "#FFF8F3", "surface": "#FFFFFF", "surface2": "#FDEBDD", "text": "#2A1208", "muted": "#6B4535", "border": "#F2D6C2", "accent": "#C2410C", "accent2": "#BE185D", "accent3": "#7E22CE", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#1A0C10", "surface": "#2A141B", "surface2": "#3A1C26", "text": "#FFF1EA", "muted": "#D3A99A", "border": "#55293A", "accent": "#FB923C", "accent2": "#F472B6", "accent3": "#C084FC", "onAccent": "#1A0C10"}
+  },
+  "graphite": {
+    "name": "Grafite", "scheme": "monocromática neutra + 1 cor de destaque", "mood": "executivo, minimalista, jurídico, relatórios sóbrios",
+    "x4": "#C46205", "x5": "#059669", "x6": "#E11D48",
+    "light": {"bg": "#F5F5F6", "surface": "#FFFFFF", "surface2": "#EAEAEC", "text": "#17181C", "muted": "#54565F", "border": "#D9DADF", "accent": "#2563EB", "accent2": "#475569", "accent3": "#B45309", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#0F1013", "surface": "#1A1B20", "surface2": "#24262D", "text": "#F1F2F4", "muted": "#A3A6B1", "border": "#2F323B", "accent": "#60A5FA", "accent2": "#94A3B8", "accent3": "#FBBF24", "onAccent": "#0F1013"}
+  },
+  "rose": {
+    "name": "Rosé", "scheme": "complementar suave (rosa ↔ ciano) + violeta", "mood": "moda, social, saúde da mulher, lifestyle, design",
+    "x4": "#2563EB", "x5": "#059669", "x6": "#C46205",
+    "light": {"bg": "#FFF7F9", "surface": "#FFFFFF", "surface2": "#FCE8EE", "text": "#2B1020", "muted": "#6E4558", "border": "#F3D3DE", "accent": "#BE123C", "accent2": "#7C3AED", "accent3": "#0E7490", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#1A0B14", "surface": "#2A1322", "surface2": "#3A1B2F", "text": "#FFEFF4", "muted": "#D6A8BC", "border": "#552A44", "accent": "#FB7185", "accent2": "#A78BFA", "accent3": "#22D3EE", "onAccent": "#1A0B14"}
+  },
+  "amber": {
+    "name": "Âmbar", "scheme": "monocromática dourada + carvão + verde-azulado", "mood": "premium, história, investimentos, gastronomia",
+    "x4": "#2563EB", "x5": "#059669", "x6": "#E11D48",
+    "light": {"bg": "#FBF8F1", "surface": "#FFFFFF", "surface2": "#F3EBD9", "text": "#1E1B14", "muted": "#5E5848", "border": "#E6DCC3", "accent": "#B45309", "accent2": "#334155", "accent3": "#0F766E", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#14120D", "surface": "#211E15", "surface2": "#2D291D", "text": "#FAF5E8", "muted": "#BDB49C", "border": "#3E382A", "accent": "#FBBF24", "accent2": "#94A3B8", "accent3": "#5EEAD4", "onAccent": "#14120D"}
+  },
+  "earth": {
+    "name": "Terra", "scheme": "terrosa (terracota + oliva + azul-jeans)", "mood": "cultura, arquitetura, alimentos, artesanal, geografia",
+    "x4": "#7C3AED", "x5": "#0E7490", "x6": "#E11D48",
+    "light": {"bg": "#FAF6F0", "surface": "#FFFFFF", "surface2": "#F0E8DB", "text": "#2B211A", "muted": "#66574A", "border": "#E2D6C4", "accent": "#B5441F", "accent2": "#4D7C0F", "accent3": "#1D4E89", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#17110D", "surface": "#241B15", "surface2": "#32261D", "text": "#F7EFE6", "muted": "#CDBBA8", "border": "#4A392B", "accent": "#F28B63", "accent2": "#A3E635", "accent3": "#7DB4F0", "onAccent": "#17110D"}
+  },
+  "playful": {
+    "name": "Primário", "scheme": "tríade (azul · vermelho · amarelo)", "mood": "educação infantil/juvenil, jogos, workshops enérgicos",
+    "x4": "#059669", "x5": "#7C3AED", "x6": "#C46205",
+    "light": {"bg": "#F8FAFF", "surface": "#FFFFFF", "surface2": "#EAF0FF", "text": "#101935", "muted": "#475075", "border": "#D5DEF7", "accent": "#2563EB", "accent2": "#DC2626", "accent3": "#B45309", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#0B1022", "surface": "#141B3A", "surface2": "#1D2652", "text": "#EEF2FF", "muted": "#A8B3DF", "border": "#2A3570", "accent": "#60A5FA", "accent2": "#F87171", "accent3": "#FACC15", "onAccent": "#0B1022"}
+  }
+}

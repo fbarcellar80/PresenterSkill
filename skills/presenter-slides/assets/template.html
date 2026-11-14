@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="generator" content="presenter-slides">
+<title>{{TITLE}}</title>
+{{FONTS}}
+<script>
+/* aplica tema/paleta salvos antes da primeira pintura (evita "piscar") */
+(function(){try{var c=JSON.parse(document.getElementById('ps-config').textContent),r=document.documentElement,p='ps:'+c.id+':';
+var m=localStorage.getItem(p+'mode')||c.mode;if(m==='light'||m==='dark')r.setAttribute('data-theme',m);
+r.setAttribute('data-palette',localStorage.getItem(p+'palette')||c.palette);}catch(e){document.documentElement.setAttribute('data-palette','aurora')}})();
+</script>
+<style>
+{{STYLE}}
+</style>
+{{HEAD_EXTRA}}
+</head>
+<body>
+<script type="application/json" id="ps-config">{{CONFIG}}</script>
+{{SPRITE}}
+<main class="deck" id="deck">
+{{SLIDES}}
+</main>
+<noscript><p style="padding:2rem;font-family:sans-serif">Esta apresentação precisa de JavaScript. / This presentation requires JavaScript.</p></noscript>
+<script>
+{{SCRIPT}}
+</script>
+</body>
+</html>
