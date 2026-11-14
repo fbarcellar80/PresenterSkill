@@ -1,0 +1,11 @@
+# dependências e artefatos locais
+node_modules/
+qa/
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+.idea/
+# builds de decks do usuário (os exemplos versionam dist/ de propósito)
+/decks/
+/*-workspace/

@@ -1,0 +1,23 @@
+name: Sugestão de recurso
+description: Novo widget, layout, paleta, ícone ou melhoria na skill
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Que problema isso resolve?
+      description: Descreva o tipo de apresentação/tema em que sente falta.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Como imagina a solução?
+      description: Esboço, exemplo de JSON de configuração ou referência visual.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options: [Widget interativo, Layout/componente, Paleta/tema, Ícones, Fluxo da skill (SKILL.md), Scripts/QA, Documentação]
+    validations:
+      required: true

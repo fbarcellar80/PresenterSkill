@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Testes unitários e exemplos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Contraste das paletas
+        run: python3 skills/presenter-slides/scripts/contrast.py
+      - name: Testes Python
+        run: python3 -m unittest discover -s tests -t . -v
+      - name: Testes Node (parser matemático)
+        run: node --test tests/math.test.cjs
+      - name: Exemplos compilados estão atualizados
+        run: |
+          make examples
+          test -z "$(git status --porcelain examples)" || { git status --short examples; echo "Rode 'make examples' e faça commit."; exit 1; }
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Ponta a ponta
+        run: node tests/e2e.cjs
+        env:
+          CI: "true"
+      - name: QA visual dos exemplos
+        run: make qa
+      - name: Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-screenshots
+          path: qa/
+          retention-days: 7

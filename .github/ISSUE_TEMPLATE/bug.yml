@@ -1,0 +1,30 @@
+name: Bug
+description: Algo não funciona como esperado
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o comportamento observado e o esperado.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Como reproduzir
+      description: Cole o trecho de `slides.html`/`deck.json` (ou o pedido feito ao Claude) e os passos.
+      render: html
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Navegador e sistema
+      placeholder: Chrome 130 · Windows 11 · projetor 1080p
+  - type: textarea
+    id: out
+    attributes:
+      label: Saída do validador / QA
+      description: Resultado de `validate_deck.py` e `qa_check.cjs`, se disponível.
+      render: text
