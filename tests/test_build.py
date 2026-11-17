@@ -41,6 +41,19 @@ class BuildTests(unittest.TestCase):
             self.assertIn("&lt;c&gt;", html)  # título escapado no <title>
             self.assertTrue((d / "dist" / "index.html").is_file())
 
+    def test_logo_light_dark_embedded_once_in_config(self):
+        with tempfile.TemporaryDirectory() as t:
+            d = make_deck(Path(t) / "d", {"title": "T", "logo": {"light": "img/a.png", "dark": "img/b.png", "alt": "Marca"}})
+            (d / "img").mkdir()
+            (d / "img" / "a.png").write_bytes(PNG_1PX)
+            (d / "img" / "b.png").write_bytes(PNG_1PX + b"\x00")
+            html = build_deck.build(d, warn=lambda m: self.fail(m)).read_text(encoding="utf-8")
+            cfg = json.loads(re.search(r'id="ps-config">(.*?)</script>', html, re.S).group(1).replace("<\\/", "</"))
+            self.assertTrue(cfg["logo"]["light"].startswith("data:image/png;base64,"))
+            self.assertNotEqual(cfg["logo"]["light"], cfg["logo"]["dark"])
+            self.assertEqual(cfg["logo"]["alt"], "Marca")
+            self.assertIn(".logo-dark", html)
+
     def test_all_palettes_generate_css_for_light_and_dark(self):
         with tempfile.TemporaryDirectory() as t:
             html = build_deck.build(make_deck(Path(t) / "d")).read_text(encoding="utf-8")

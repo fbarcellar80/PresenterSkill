@@ -334,6 +334,10 @@ def validate(deck_dir: Path, strict: bool = False):
             err(f'deck.json: fonts "{meta.get("fonts")}" inexistente ({", ".join(FONT_SETS)})')
         if meta.get("mode", "auto") not in ("auto", "light", "dark"):
             err('deck.json: mode deve ser auto, light ou dark')
+        lg = meta.get("logo")
+        for rel in ([lg] if isinstance(lg, str) else [lg.get("light"), lg.get("dark")] if isinstance(lg, dict) else []):
+            if rel and not re.match(r"^(https?:|data:|//)", rel) and not (deck_dir / rel).is_file():
+                err(f"deck.json: logo não encontrada: {rel}")
         if len(meta.get("title", "")) > 90:
             warn("deck.json: título muito longo (>90 caracteres)")
 

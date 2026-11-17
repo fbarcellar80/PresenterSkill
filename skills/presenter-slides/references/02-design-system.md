@@ -81,6 +81,13 @@ Em `deck.json`:
 O build avisa se algum par de cores não atingir os mínimos de contraste. `x4–x6` são cores de gráfico que servem nos dois fundos
 (luminância média). Se o usuário só tem 1 cor de marca: use-a como `accent` (claro: tom escuro dela; escuro: tom claro) e herde o resto de `graphite`.
 
+### Logo da marca
+Em `deck.json`: `"logo": {"light": "imagens/logo-azul.png", "dark": "imagens/logo-branca.png", "alt": "Marca"}` (ou só um caminho).
+O build embute os arquivos uma vez e o motor põe a logo na barra superior de todos os slides, trocando a versão conforme o tema
+(claro/escuro/auto). Use PNG/SVG com fundo transparente: a versão `light` na cor da marca, a `dark` em branco. Em slides
+(capa, fecho) repita o par de imagens: `<img class="logo-light" src="…" alt="Marca"><img class="logo-dark" src="…" alt="Marca">` —
+a classe mostra só a versão do tema atual.
+
 ## 7. Tipografia
 `deck.json` → `"fonts"`:
 | Valor | Títulos / Corpo | Personalidade |

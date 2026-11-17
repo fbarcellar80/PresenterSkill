@@ -69,7 +69,7 @@
   const progress = el('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': 1, 'aria-valuemax': N }, el('i'));
   const live = el('div', { class: 'sr-only', 'aria-live': 'polite', 'aria-atomic': 'true' });
   document.body.append(
-    el('div', { class: 'chrome-top' }, el('div', { class: 'brand' }, el('span', { class: 'dot' }), brandTitle, el('span', { class: 'sep', 'aria-hidden': 'true' }, '·'), sectionLabel), el('div', { class: 'toolbar', role: 'toolbar', 'aria-label': 'Controles' }, bOverview, bNotes, bTheme, bSettings, bFull, bHelp)),
+    el('div', { class: 'chrome-top' }, el('div', { class: 'brand' }, ...(cfg.logo ? [el('img', { class: 'brand-logo logo-light', src: cfg.logo.light, alt: cfg.logo.alt }), el('img', { class: 'brand-logo logo-dark', src: cfg.logo.dark, alt: '' })] : [el('span', { class: 'dot' })]), brandTitle, el('span', { class: 'sep', 'aria-hidden': 'true' }, '·'), sectionLabel), el('div', { class: 'toolbar', role: 'toolbar', 'aria-label': 'Controles' }, bOverview, bNotes, bTheme, bSettings, bFull, bHelp)),
     el('div', { class: 'chrome-bottom' }, el('span'), el('div', { class: 'nav-btns toolbar' }, bPrev, counter, bNext)),
     progress, live);
 
