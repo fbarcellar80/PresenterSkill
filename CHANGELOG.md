@@ -2,6 +2,11 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Adicionado
+- Ícone `notebook-pen` (caderno e lápis) no sprite e botão-pílula `.info-btn.read-btn`: abre um texto longo (trecho de norma, citação, dedução) em painel sobre o slide e o recolhe com Esc, clique fora ou ✕.
+
 ## [0.1.0] — 2026-11-14
 
 ### Adicionado

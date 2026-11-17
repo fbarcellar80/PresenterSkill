@@ -1,7 +1,7 @@
 # 05 · Ícones, "saiba mais" e referências cruzadas
 
 Ícones servem a duas funções: **ilustrar** (badges, cards, rótulos) e **expandir a ideia** (abrir um aprofundamento ou retomar
-outro slide). Todos vêm de um sprite embutido (75 ícones de traço, 24×24, herdam a cor do texto).
+outro slide). Todos vêm de um sprite embutido (76 ícones de traço, 24×24, herdam a cor do texto).
 
 ## Sumário
 [Usar ícones](#usar-ícones) · [Catálogo](#catálogo) · [Saiba mais](#saiba-mais-painel-lateral) · [Dicas rápidas](#dicas-rápidas-glossário) ·
@@ -19,7 +19,7 @@ O validador acusa nomes que não existem. Ícone sem sentido óbvio precisa de `
 ## Catálogo
 | Uso | Nomes |
 |---|---|
-| Informação e ajuda | `info` `help` `lightbulb` `book` `graduation` `bookmark` `search` `eye` |
+| Informação e ajuda | `info` `help` `lightbulb` `book` `notebook-pen` `graduation` `bookmark` `search` `eye` |
 | Navegação | `arrow-left` `arrow-right` `arrow-up` `arrow-down` `chevron-left` `chevron-right` `link` `external` `home` `compass` `map-pin` |
 | Ações | `play` `pause` `reset` `plus` `minus` `check` `x` `download` `settings` `maximize` `minimize` `grid` `list` `notes` `keyboard` |
 | Dados e matemática | `bar-chart` `line-chart` `pie-chart` `trending-up` `activity` `calculator` `sigma` `percent` `database` `layers` |
@@ -43,6 +43,8 @@ clique fora ou ✕, e o foco retorna ao botão.
   <a class="xref" data-goto="formula">Ir para a fórmula</a>
 </template>
 ```
+- **Texto longo** (trecho de norma, citação, dedução): use o botão-pílula caderno + lápis, que abre o texto sobre o slide e se recolhe com Esc, clique fora ou ✕:
+  `<button class="info-btn read-btn" data-detail="d-texto"><i data-icon="notebook-pen"></i><span>Ler o texto</span></button>`
 - O botão vazio recebe o ícone `info` sozinho; ponha **`aria-label` descritivo**.
 - `<template id>` pode ficar em qualquer lugar do slide; `id` único no deck inteiro (use prefixo `d-`).
 - O conteúdo aceita títulos, parágrafos, listas, fórmulas, imagens, **links `data-goto`** e outros `data-detail`.

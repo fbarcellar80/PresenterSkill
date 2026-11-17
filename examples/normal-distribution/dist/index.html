@@ -410,6 +410,9 @@ svg.diagram [data-detail]:hover .dg-node, svg.diagram [data-goto]:hover .dg-node
 }
 .info-btn:hover, .goto-btn:hover { background: var(--accent); color: var(--on-accent); transform: scale(1.1); }
 .info-btn svg.icon, .goto-btn svg.icon { width: 1.05rem; height: 1.05rem; }
+/* Botão "ler o texto" (caderno + lápis): abre o painel sobre o slide com o texto longo; fecha com Esc/clique fora/✕ */
+.info-btn.read-btn { width: auto; border-radius: 999px; padding: 0 .85rem 0 .65rem; gap: .45rem; grid-auto-flow: column; font: 700 .82rem var(--font-body); line-height: 1; }
+.info-btn.read-btn svg.icon { width: 1.2rem; height: 1.2rem; }
 .goto-btn { border-color: color-mix(in srgb, var(--accent2) 45%, transparent); background: color-mix(in srgb, var(--accent2) 10%, var(--surface)); color: var(--accent2); }
 .goto-btn:hover { background: var(--accent2); color: var(--on-accent); }
 .xref { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .65rem; border-radius: 999px; border: 1px dashed var(--accent2); color: var(--accent2); font: 700 .8rem var(--font-body); text-decoration: none; cursor: pointer; background: transparent; }
@@ -666,6 +669,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2"/></symbol>
 <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0Z"/></symbol>
 <symbol id="i-wind" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/></symbol>
+<symbol id="i-notebook-pen" viewBox="0 0 24 24"><path d="M15 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M3 7h4M3 11h4M3 15h4"/><path d="M19 3.6a1.8 1.8 0 0 1 2.5 2.5L13.2 14.4l-3.4 1 1-3.4Z"/></symbol>
 </svg>
 
 <main class="deck" id="deck">
