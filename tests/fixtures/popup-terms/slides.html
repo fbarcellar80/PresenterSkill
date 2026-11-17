@@ -1,0 +1,28 @@
+<section class="slide" id="a" data-title="Fórmula">
+  <div class="slide-head"><h2>Termos explicados</h2></div>
+  <p class="formula" data-terms="SL=Sobrelargura: folga extra ao redor do tubo.">LV = D + SL</p>
+  <p>Em linha: <span class="fx">FS = LV + 2 × 0,15 m</span></p>
+  <button type="button" class="btn primary" data-popup="p-calc">Abrir calculadora</button>
+  <template id="p-calc" data-title="Calculadora" data-size="wide">
+    <div class="widget" data-widget="lab" data-bare>
+      <script type="application/json">
+      { "title": "Largura da vala", "params": [{"id":"d","label":"Diâmetro","min":0.1,"max":1,"step":0.05,"value":0.3,"format":"num:2"}],
+        "outputs": [{"label":"LV · vala","expr":"d+0.35","format":"num:2"}], "insight": "LV = {d+0.35|num:2} m" }
+      </script>
+    </div>
+  </template>
+</section>
+<section class="slide" id="b" data-title="Lab estreito">
+  <div class="slide-head"><h2>Lab em coluna estreita</h2></div>
+  <div class="split wide-visual">
+    <div class="stack">
+      <div class="widget" data-widget="lab" data-bare>
+        <script type="application/json">
+        { "title": "Quanto cabe?", "params": [{"id":"a","label":"A","min":1,"max":3,"step":0.5,"value":1.5},{"id":"b","label":"B","min":4,"max":12,"step":0.5,"value":7}],
+          "outputs": [{"label":"Metade de A","expr":"a/2","format":"num:2"},{"label":"B menos metade","expr":"b-a/2","format":"num:2"}] }
+        </script>
+      </div>
+    </div>
+    <figure class="media frame"><div class="media-ph"><i data-icon="image"></i></div></figure>
+  </div>
+</section>

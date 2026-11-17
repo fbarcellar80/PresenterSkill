@@ -45,7 +45,8 @@
     $$('.cards, .stats, .steps, .timeline, .stagger', s).forEach((g) => Array.from(g.children).forEach((c, k) => { if (!c.hasAttribute('data-anim')) c.setAttribute('data-anim', 'up'); c.style.setProperty('--i', k); }));
     $$('[data-anim]:not(.cards > *):not(.stats > *):not(.steps > *):not(.timeline > *):not(.stagger > *)', s).forEach((c, k) => { if (!c.style.getPropertyValue('--i')) c.style.setProperty('--i', k); });
     // elementos interativos em SVG ou não-botões precisam de teclado
-    $$('[data-detail]:not(button), [data-goto]:not(button):not(a), [data-tip]:not(button):not(a):not(input)', s).forEach((n) => { if (!n.hasAttribute('tabindex')) n.setAttribute('tabindex', '0'); if (!n.getAttribute('role')) n.setAttribute('role', 'button'); });
+    $$('[data-detail]:not(button), [data-popup]:not(button), [data-goto]:not(button):not(a), [data-tip]:not(button):not(a):not(input)', s).forEach((n) => { if (!n.hasAttribute('tabindex')) n.setAttribute('tabindex', '0'); if (!n.getAttribute('role')) n.setAttribute('role', 'button'); });
+    PS.decorateTerms(s);
     PS.initWidgets(s);
     // passos (fragmentos)
     const sts = $$('[data-step]', s);
@@ -238,6 +239,7 @@
     const src = document.getElementById(id); if (!src) { console.warn('[presenter-slides] data-detail sem alvo:', id); return; }
     closeDetail(true); lastFocus = trigger || document.activeElement;
     const content = el('div', { class: 'drawer-content' }); if (src.tagName === 'TEMPLATE') content.appendChild(src.content.cloneNode(true)); else content.innerHTML = src.innerHTML;
+    enhance(content); PS.decorateTerms(content);
     const title = $('h1,h2,h3,h4', content); const tid = PS.uid('dt'); if (title) title.id = tid;
     const close = el('button', { type: 'button', class: 'tbtn close', 'aria-label': PS.t('close') }, PS.icon('x')); close.addEventListener('click', () => closeDetail());
     drawer = el('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': title ? tid : null, 'aria-label': title ? null : PS.t('moreinfo') }, close, content);
@@ -252,10 +254,49 @@
     if (!instant && lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
+  // ícones declarativos e botões vazios em conteúdo inserido depois (painel, pop-up)
+  function enhance(root) {
+    $$('[data-icon]', root).forEach((n) => { if (!$('svg', n)) n.prepend(PS.icon(n.dataset.icon)); });
+    $$('.info-btn:empty, .goto-btn:empty', root).forEach((n) => n.appendChild(PS.icon(n.classList.contains('info-btn') ? 'info' : 'arrow-right')));
+  }
+
+  // pop-up: janela modal sobre o slide atual (mesmo slide ao fechar); aceita widgets
+  let popup = null;
+  function openPopup(id, trigger) {
+    const src = document.getElementById(id); if (!src) { console.warn('[presenter-slides] data-popup sem alvo:', id); return; }
+    closeDetail(true); closePopup(true);
+    const content = el('div', { class: 'popup-body is-active' });
+    if (src.tagName === 'TEMPLATE') content.appendChild(src.content.cloneNode(true)); else content.innerHTML = src.innerHTML;
+    enhance(content); PS.decorateTerms(content);
+    const tid = PS.uid('pp');
+    const close = el('button', { type: 'button', class: 'tbtn close', 'aria-label': PS.t('close'), title: PS.t('close') + ' (Esc)' }, PS.icon('x'));
+    const box = el('div', { class: 'popup', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': tid, 'data-size': src.dataset.size || '' },
+      el('div', { class: 'popup-head' }, el('h3', { id: tid }, src.dataset.title || ''), close), content);
+    const sc = el('div', { class: 'popup-scrim' });
+    close.addEventListener('click', () => closePopup()); sc.addEventListener('click', () => closePopup());
+    document.body.append(sc, box);
+    PS.initWidgets(content);
+    popup = { box, sc, close, trigger: trigger || document.activeElement };
+    requestAnimationFrame(() => { box.classList.add('open'); sc.classList.add('open'); close.focus({ preventScroll: true }); window.dispatchEvent(new Event('resize')); });
+  }
+  function closePopup(instant) {
+    if (!popup) return; const p = popup; popup = null; p.box.classList.remove('open'); p.sc.classList.remove('open');
+    const kill = () => { p.box.remove(); p.sc.remove(); }; if (instant) kill(); else setTimeout(kill, 320);
+    if (!instant && p.trigger && p.trigger.focus) p.trigger.focus({ preventScroll: true });
+  }
+  document.addEventListener('keydown', (e) => { // foco preso dentro do pop-up (o painel "saiba mais" fica por cima)
+    if (e.key !== 'Tab' || !popup || drawer) return;
+    const f = $$('button, a[href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])', popup.box).filter((n) => !n.disabled && n.offsetParent !== null);
+    if (!f.length) return; const first = f[0], last = f[f.length - 1];
+    if (!popup.box.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
   // tooltip simples
-  const tipEl = el('div', { class: 'tip', role: 'tooltip', hidden: true }); document.body.appendChild(tipEl);
-  function showTipFor(n) { tipEl.textContent = n.dataset.tip; tipEl.hidden = false; const r = n.getBoundingClientRect(); const w = tipEl.offsetWidth, h = tipEl.offsetHeight; tipEl.style.left = clamp(r.left + r.width / 2 - w / 2, 8, innerWidth - w - 8) + 'px'; tipEl.style.top = (r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8) + 'px'; }
-  const hideTipEl = () => { tipEl.hidden = true; };
+  const tipEl = el('div', { class: 'tip', role: 'tooltip' }); document.body.appendChild(tipEl);
+  function showTipFor(n) { tipEl.textContent = n.dataset.tip; tipEl.classList.add('on'); const r = n.getBoundingClientRect(); const w = tipEl.offsetWidth, h = tipEl.offsetHeight; tipEl.style.left = clamp(r.left + r.width / 2 - w / 2, 8, innerWidth - w - 8) + 'px'; tipEl.style.top = (r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8) + 'px'; }
+  const hideTipEl = () => { tipEl.classList.remove('on'); };
   document.addEventListener('mouseover', (e) => { const n = e.target.closest && e.target.closest('[data-tip]'); if (n) showTipFor(n); });
   document.addEventListener('mouseout', (e) => { if (e.target.closest && e.target.closest('[data-tip]')) hideTipEl(); });
   document.addEventListener('focusin', (e) => { const n = e.target.closest && e.target.closest('[data-tip]'); if (n) showTipFor(n); });
@@ -267,13 +308,14 @@
 
   // delegação de cliques: detalhes e referências
   document.addEventListener('click', (e) => {
+    const pp = e.target.closest && e.target.closest('[data-popup]'); if (pp) { e.preventDefault(); openPopup(pp.dataset.popup, pp); return; }
     const d = e.target.closest && e.target.closest('[data-detail]'); if (d) { e.preventDefault(); openDetail(d.dataset.detail, d); return; }
-    const g = e.target.closest && e.target.closest('[data-goto]'); if (g) { e.preventDefault(); if (drawer) closeDetail(true); xref(g.dataset.goto); return; }
+    const g = e.target.closest && e.target.closest('[data-goto]'); if (g) { e.preventDefault(); if (drawer) closeDetail(true); if (popup) closePopup(true); xref(g.dataset.goto); return; }
     const t = e.target.closest && e.target.closest('[data-tip]'); if (t && matchMedia('(hover: none)').matches) { showTipFor(t); setTimeout(hideTipEl, 2600); }
     if (!e.target.closest('.popover, .toolbar')) { settingsPanel.hidden = true; helpPanel.hidden = true; bSettings.setAttribute('aria-expanded', 'false'); bHelp.setAttribute('aria-expanded', 'false'); }
   });
   document.addEventListener('keydown', (e) => { // Enter/Espaço em elementos role=button que não são <button>
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-detail], [role="button"][data-goto], [role="button"][data-tip]')) { e.preventDefault(); e.target.click(); e.stopPropagation(); }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-detail], [role="button"][data-popup], [role="button"][data-goto], [role="button"][data-tip]')) { e.preventDefault(); e.target.click(); e.stopPropagation(); }
   }, true);
 
   // ====================================================================
@@ -285,8 +327,8 @@
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.altKey || e.metaKey) return;
     const k = e.key; const t = e.target;
-    if (k === 'Escape') { if (drawer) closeDetail(); else if (overview) toggleOverview(false); else if (!settingsPanel.hidden || !helpPanel.hidden) { togglePopover(settingsPanel, bSettings, false); togglePopover(helpPanel, bHelp, false); } else if (blackout) toggleBlackout(); else if (t && t.blur && isInteractive(t)) t.blur(); return; }
-    if (drawer || overview) return;
+    if (k === 'Escape') { if (drawer) closeDetail(); else if (popup) closePopup(); else if (overview) toggleOverview(false); else if (!settingsPanel.hidden || !helpPanel.hidden) { togglePopover(settingsPanel, bSettings, false); togglePopover(helpPanel, bHelp, false); } else if (blackout) toggleBlackout(); else if (t && t.blur && isInteractive(t)) t.blur(); return; }
+    if (drawer || popup || overview) return;
     if (isEditable(t)) { if (k !== 'PageDown' && k !== 'PageUp') return; }
     const onRange = t && t.matches && t.matches('input[type="range"]');
     const slide = slides[cur]; const scrollable = slide.scrollHeight > slide.clientHeight + 4;
@@ -314,11 +356,11 @@
 
   // toque: deslizar horizontalmente (fora de widgets e controles)
   let tx = 0, ty = 0, tt = 0, tOK = false;
-  document.addEventListener('touchstart', (e) => { const t = e.target; tOK = !(t.closest && t.closest('.widget, input, select, textarea, pre, .drawer, .popover, .overview, .notes-panel, .toolbar')); if (!tOK) return; const p = e.changedTouches[0]; tx = p.clientX; ty = p.clientY; tt = Date.now(); }, { passive: true });
-  document.addEventListener('touchend', (e) => { if (!tOK || drawer || overview) return; const p = e.changedTouches[0]; const dx = p.clientX - tx, dy = p.clientY - ty; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && Date.now() - tt < 900) dx < 0 ? next() : prev(); }, { passive: true });
+  document.addEventListener('touchstart', (e) => { const t = e.target; tOK = !(t.closest && t.closest('.widget, input, select, textarea, pre, .drawer, .popup, .popover, .overview, .notes-panel, .toolbar')); if (!tOK) return; const p = e.changedTouches[0]; tx = p.clientX; ty = p.clientY; tt = Date.now(); }, { passive: true });
+  document.addEventListener('touchend', (e) => { if (!tOK || drawer || popup || overview) return; const p = e.changedTouches[0]; const dx = p.clientX - tx, dy = p.clientY - ty; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && Date.now() - tt < 900) dx < 0 ? next() : prev(); }, { passive: true });
 
   // esconder interface quando o mouse fica parado (modo palco)
-  let idleT = 0; const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => { if (settingsPanel.hidden && helpPanel.hidden && !drawer && !overview) document.body.classList.add('idle'); }, 3500); };
+  let idleT = 0; const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => { if (settingsPanel.hidden && helpPanel.hidden && !drawer && !popup && !overview) document.body.classList.add('idle'); }, 3500); };
   ['mousemove', 'mousedown', 'keydown', 'touchstart'].forEach((ev) => document.addEventListener(ev, wake, { passive: true })); wake();
 
   window.addEventListener('hashchange', () => { const j = resolveTarget((location.hash || '').replace(/^#\/?/, '')); if (j >= 0 && j !== cur) go(j, { noHash: true }); });
@@ -333,5 +375,5 @@
   // fórmulas (KaTeX opcional via CDN)
   window.addEventListener('load', () => { if (window.renderMathInElement) { try { window.renderMathInElement(deck, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }], throwOnError: false }); } catch (e) { /* mantém texto */ } } });
 
-  PS.deck = { go: (i) => go(i), next, prev, get index() { return cur; }, count: N, slides, setMode: (m) => { prefs.mode = m; applyPrefs(); }, setPalette: (p) => { prefs.palette = p; applyPrefs(); }, openOverview: toggleOverview, xref };
+  PS.deck = { go: (i) => go(i), next, prev, get index() { return cur; }, count: N, slides, setMode: (m) => { prefs.mode = m; applyPrefs(); }, setPalette: (p) => { prefs.palette = p; applyPrefs(); }, openOverview: toggleOverview, xref, openPopup: (id) => openPopup(id), closePopup: () => closePopup(true), get popupOpen() { return !!popup; } };
 })();

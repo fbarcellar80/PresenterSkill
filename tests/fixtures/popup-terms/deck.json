@@ -1,0 +1,10 @@
+{
+  "title": "Pop-up e termos",
+  "lang": "pt-BR",
+  "palette": "azul_mod",
+  "glossary": {
+    "LV": "Largura da vala: quanto a escavação mede no fundo.",
+    "FS": "Faixa de servidão: faixa permanente de proteção e acesso.",
+    "D": "Diâmetro externo do tubo."
+  }
+}

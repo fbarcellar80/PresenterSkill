@@ -44,6 +44,39 @@
   PS.cfg = cfg;
   PS.lang = cfg.lang || document.documentElement.lang || 'pt-BR';
 
+  // ---------- termos de fórmulas com significado ao passar o mouse ----------
+  // Glossário do deck (deck.json › glossary) + data-terms local ("A=texto; B=texto" ou JSON). Atua em .formula, .fx e [data-terms].
+  const WORD = '0-9A-Za-z_\\u00C0-\\u024F';
+  const parseTerms = (s) => {
+    s = (s || '').trim(); if (!s) return {};
+    if (s[0] === '{') { try { return JSON.parse(s); } catch (e) { return {}; } }
+    const o = {}; s.split(';').forEach((p) => { const i = p.indexOf('='); if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim(); }); return o;
+  };
+  PS.decorateTerms = function (root, opts) {
+    if (!root) return;
+    const targets = (opts && opts.force) ? [root] : [...(root.matches && root.matches('.formula, .fx, [data-terms]') ? [root] : []), ...root.querySelectorAll('.formula, .fx, [data-terms]')];
+    targets.forEach((t) => {
+      if (t.dataset && t.dataset.terms === 'off') return;
+      const map = Object.assign({}, cfg.glossary || {}, parseTerms(t.dataset && t.dataset.terms));
+      const keys = Object.keys(map).filter((k) => map[k]).sort((a, b) => b.length - a.length);
+      if (!keys.length) return;
+      const re = new RegExp('(^|[^' + WORD + '])(' + keys.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![' + WORD + '])', 'g');
+      const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest('.term, script, style, template')) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+      const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach((n) => {
+        const text = n.nodeValue; re.lastIndex = 0; let m, last = 0; let frag = null;
+        while ((m = re.exec(text))) {
+          frag = frag || document.createDocumentFragment();
+          const start = m.index + m[1].length;
+          if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
+          const sp = document.createElement('span'); sp.className = 'term fx-term'; sp.dataset.tip = map[m[2]]; sp.tabIndex = 0; sp.textContent = m[2]; frag.appendChild(sp);
+          last = start + m[2].length;
+        }
+        if (frag) { if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last))); n.parentNode.replaceChild(frag, n); }
+      });
+    });
+  };
+
   // ---------- i18n da interface ----------
   const I18N = {
     pt: { prev: 'Slide anterior', next: 'Próximo slide', overview: 'Visão geral', theme: 'Tema', settings: 'Ajustes', fullscreen: 'Tela cheia', help: 'Atalhos', notes: 'Notas do apresentador', close: 'Fechar', back: 'Voltar para o slide', auto: 'Auto', light: 'Claro', dark: 'Escuro', palette: 'Paleta de cores', textsize: 'Tamanho do texto', motion: 'Animações', mode: 'Modo', slideof: 'Slide {n} de {total}', moreinfo: 'Saiba mais', goto: 'Ir para o slide', reset: 'Restaurar', play: 'Animar', pause: 'Pausar', draw: 'Sortear', add: 'Adicionar', sampleSize: 'Tamanho da amostra', check: 'Verificar', correct: 'Correto!', incorrect: 'Não é essa.', before: 'Antes', after: 'Depois', slides: 'Slides', nonotes: 'Sem notas para este slide.', total: 'Total', samples: 'amostras', mean: 'Média', sd: 'Desvio-padrão', theory: 'Normal com mesma média e σ', keys: { next: 'Próximo (também Espaço, Enter, PageDown)', prev: 'Anterior (também Backspace, PageUp)', homeend: 'Primeiro / último slide', jump: 'Digite o número e Enter para ir a um slide', o: 'Visão geral dos slides', t: 'Alternar tema claro/escuro', p: 'Trocar paleta de cores', f: 'Tela cheia', n: 'Notas do apresentador', b: 'Tela preta (apresentação)', esc: 'Fechar painéis' } },

@@ -8,7 +8,7 @@ let chromium; try { ({ chromium } = require('playwright')); } catch (e) { consol
 
 const root = path.join(__dirname, '..');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ps-e2e-'));
-const build = (name) => { const out = path.join(tmp, name + '.html'); execFileSync('python3', [path.join(root, 'skills/presenter-slides/scripts/build_deck.py'), path.join(root, 'examples', name), '-o', out, '--no-fonts'], { stdio: 'pipe' }); return 'file://' + out; };
+const build = (name, dir = path.join(root, 'examples', name)) => { const out = path.join(tmp, name + '.html'); execFileSync('python3', [path.join(root, 'skills/presenter-slides/scripts/build_deck.py'), dir, '-o', out, '--no-fonts'], { stdio: 'pipe' }); return 'file://' + out; };
 
 let passed = 0;
 const ok = (cond, msg) => { assert.ok(cond, msg); passed++; console.log('  ✔', msg); };
@@ -90,6 +90,30 @@ const eq = (a, b, msg) => { assert.deepEqual(a, b, `${msg} (obtido: ${JSON.strin
   await page.evaluate(() => PS.deck.go(3)); const vl = page.locator('.slide.is-active .out .v').first(); const before = await vl.textContent();
   await page.locator('.slide.is-active input[type=range]').nth(2).fill('3'); ok((await vl.textContent()) !== before, 'faixa ±kσ altera a probabilidade');
   await page.locator('.slide.is-active .plot-host rect').last().hover({ position: { x: 200, y: 50 } }); ok(await page.locator('.slide.is-active .plot-tip.on').count() === 1, 'hover mostra tooltip');
+
+  console.log('popup e termos em fórmulas');
+  await open(build('popup-terms', path.join(root, 'tests/fixtures/popup-terms')));
+  const fterm = page.locator('.slide.is-active .formula .term', { hasText: 'LV' }).first(); await fterm.hover(); await page.waitForSelector('.tip.on');
+  ok((await page.locator('.tip.on').textContent()).includes('Largura da vala'), 'termo da fórmula mostra o significado (glossário do deck)');
+  await page.locator('.slide.is-active .formula .term', { hasText: 'SL' }).first().hover(); ok((await page.locator('.tip.on').textContent()).includes('Sobrelargura'), 'data-terms local complementa o glossário');
+  ok(await page.locator('.slide.is-active .fx .term').count() >= 2, 'fórmula em linha (.fx) também recebe os termos');
+  await page.mouse.move(5, 5); await page.waitForTimeout(300); eq(await page.locator('.tip.on').count(), 0, 'tooltip some ao sair do termo');
+  await page.locator('.slide.is-active [data-popup]').first().click(); await page.waitForSelector('.popup.open');
+  ok(await page.locator('.popup.open .plot-host svg, .popup.open .out .v').count() > 0, 'pop-up renderiza o widget');
+  ok(await page.locator('.popup.open .out .k .term').count() > 0, 'rótulos de saída do lab recebem termos');
+  await page.keyboard.press('ArrowRight'); eq(await idx(), 0, 'setas não trocam de slide com o pop-up aberto');
+  await page.keyboard.press('Escape'); await page.waitForTimeout(450); eq(await page.locator('.popup').count(), 0, 'Esc fecha o pop-up');
+  eq(await idx(), 0, 'continua no mesmo slide ao fechar');
+  eq(await page.evaluate(() => document.activeElement.hasAttribute('data-popup')), true, 'foco retorna ao botão');
+  await page.locator('.slide.is-active [data-popup]').first().click(); await page.waitForSelector('.popup.open');
+  await page.locator('.popup-scrim').click({ position: { x: 5, y: 5 } }); await page.waitForTimeout(450); eq(await page.locator('.popup').count(), 0, 'clique fora fecha o pop-up');
+  await page.locator('.slide.is-active [data-popup]').first().click(); await page.waitForSelector('.popup.open'); await page.locator('.popup .close').click(); await page.waitForTimeout(450); eq(await page.locator('.popup').count(), 0, 'botão ✕ fecha o pop-up');
+
+  await page.evaluate(() => PS.deck.go(1)); await page.waitForTimeout(300);
+  eq(await page.evaluate(() => getComputedStyle(document.querySelector('.slide.is-active .lab-grid')).gridTemplateColumns.trim().split(/\s+/).length), 1, 'lab em coluna estreita usa 1 coluna (controles não ficam sob os resultados)');
+  const noOverlap = await page.evaluate(() => { const g = document.querySelector('.slide.is-active .lab-grid'); const r = (n) => n.getBoundingClientRect(); const c = r(g.querySelector('input[type=range]')), o = r(g.querySelector('.outputs')); return c.bottom <= o.top + 1 || c.right <= o.left + 1; });
+  ok(noOverlap, 'slider e cartões de resultado não se sobrepõem');
+  await page.evaluate(() => PS.deck.go(0));
 
   console.log('mobile');
   const m = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' }); const mp = await m.newPage();

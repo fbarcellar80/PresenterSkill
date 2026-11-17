@@ -26,6 +26,14 @@ class ValidateTests(unittest.TestCase):
                 self.assertEqual(errors, [])
                 self.assertGreater(n, 3)
 
+    def test_popup_target_and_glossary_are_checked(self):
+        e, _, _ = run('<section class="slide" id="s"><h2>T</h2><button data-popup="nope">x</button></section>')
+        self.assertTrue(any("data-popup" in m for m in e), e)
+        e, _, _ = run('<section class="slide" id="s"><h2>T</h2><button data-popup="p">x</button><template id="p" data-title="P"><p>ok</p></template></section>')
+        self.assertFalse([m for m in e if "data-popup" in m], e)
+        e, _, _ = run('<section class="slide" id="s"><h2>T</h2></section>', {"title": "T", "glossary": {"LV": 3}})
+        self.assertTrue(any("glossary" in m for m in e), e)
+
     def test_invalid_json_in_widget(self):
         e, _, _ = run('<section class="slide" id="s"><h2>T</h2><div class="widget" data-widget="lab"><script type="application/json">{"a":,}</script></div></section>')
         self.assertTrue(any("JSON inválido" in x for x in e))

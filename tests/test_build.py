@@ -54,6 +54,15 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(cfg["logo"]["alt"], "Marca")
             self.assertIn(".logo-dark", html)
 
+    def test_glossary_goes_to_runtime_config(self):
+        with tempfile.TemporaryDirectory() as t:
+            d = make_deck(Path(t) / "d", {"title": "T", "glossary": {"LV": "Largura da vala"}})
+            html = build_deck.build(d, warn=lambda m: self.fail(m)).read_text(encoding="utf-8")
+            cfg = json.loads(re.search(r'id="ps-config">(.*?)</script>', html, re.S).group(1).replace("<\\/", "</"))
+            self.assertEqual(cfg["glossary"], {"LV": "Largura da vala"})
+            with self.assertRaises(DeckError):
+                build_deck.build(make_deck(Path(t) / "bad", {"title": "T", "glossary": {"LV": 1}}))
+
     def test_all_palettes_generate_css_for_light_and_dark(self):
         with tempfile.TemporaryDirectory() as t:
             html = build_deck.build(make_deck(Path(t) / "d")).read_text(encoding="utf-8")

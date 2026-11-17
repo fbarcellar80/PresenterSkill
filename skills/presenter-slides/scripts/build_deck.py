@@ -180,6 +180,12 @@ def build(deck_dir: str | Path, out: str | Path | None = None, fonts: bool = Tru
                       "colors": [palettes[k]["light"]["accent"], palettes[k]["light"]["accent2"], palettes[k]["light"]["accent3"]]} for k in allowed],
     }
 
+    gl = meta.get("glossary")
+    if gl is not None:
+        if not isinstance(gl, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in gl.items()):
+            raise DeckError('glossary deve ser um objeto {"termo": "significado"}')
+        runtime["glossary"] = gl
+
     logo = meta.get("logo")
     if logo:
         if isinstance(logo, str):
