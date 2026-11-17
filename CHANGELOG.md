@@ -8,6 +8,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Pop-up (modal) sobre o slide: `data-popup="id"` + `<template id data-title data-size>`; aceita widgets, fecha com ✕/Esc/clique fora e volta ao mesmo slide; setas não navegam enquanto aberto.
 - Termos em fórmulas: `deck.json › glossary` e `data-terms` em `.formula`/`.fx` (e rótulos de saída do `lab`) mostram o significado ao passar o mouse/focar/tocar; tooltip agora aparece com transição suave.
 - Ícone `cycle` (setas circulares).
+- Corrigido: `lab` em coluna estreita (ex.: dentro de um `.split`) em telas grandes ficava com controles espremidos sob os cartões de resultado; agora a grade vira 1 coluna pelo tamanho do próprio widget (container query).
 - Paleta `azul_mod` (azul institucional monocromático com cinza de apoio, sem verde), validada por contraste em claro e escuro.
 - `deck.json › logo` (`{light, dark, alt}`): logo na barra superior de todos os slides, com versão para tema claro e outra para escuro; classes `.logo-light`/`.logo-dark` para usar o par nos slides.
 - Capa com foto (`.cover-photo` + `.cover-veil`): foto à direita que se dissolve no fundo, responsiva.

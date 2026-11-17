@@ -109,6 +109,12 @@ const eq = (a, b, msg) => { assert.deepEqual(a, b, `${msg} (obtido: ${JSON.strin
   await page.locator('.popup-scrim').click({ position: { x: 5, y: 5 } }); await page.waitForTimeout(450); eq(await page.locator('.popup').count(), 0, 'clique fora fecha o pop-up');
   await page.locator('.slide.is-active [data-popup]').first().click(); await page.waitForSelector('.popup.open'); await page.locator('.popup .close').click(); await page.waitForTimeout(450); eq(await page.locator('.popup').count(), 0, 'botão ✕ fecha o pop-up');
 
+  await page.evaluate(() => PS.deck.go(1)); await page.waitForTimeout(300);
+  eq(await page.evaluate(() => getComputedStyle(document.querySelector('.slide.is-active .lab-grid')).gridTemplateColumns.trim().split(/\s+/).length), 1, 'lab em coluna estreita usa 1 coluna (controles não ficam sob os resultados)');
+  const noOverlap = await page.evaluate(() => { const g = document.querySelector('.slide.is-active .lab-grid'); const r = (n) => n.getBoundingClientRect(); const c = r(g.querySelector('input[type=range]')), o = r(g.querySelector('.outputs')); return c.bottom <= o.top + 1 || c.right <= o.left + 1; });
+  ok(noOverlap, 'slider e cartões de resultado não se sobrepõem');
+  await page.evaluate(() => PS.deck.go(0));
+
   console.log('mobile');
   const m = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' }); const mp = await m.newPage();
   await mp.goto(build('juros-compostos')); await mp.waitForSelector('body.ps-ready');

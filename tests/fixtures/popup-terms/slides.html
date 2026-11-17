@@ -12,4 +12,17 @@
     </div>
   </template>
 </section>
-<section class="slide" id="b" data-title="Segundo"><h2>Outro slide</h2><p>Fim.</p></section>
+<section class="slide" id="b" data-title="Lab estreito">
+  <div class="slide-head"><h2>Lab em coluna estreita</h2></div>
+  <div class="split wide-visual">
+    <div class="stack">
+      <div class="widget" data-widget="lab" data-bare>
+        <script type="application/json">
+        { "title": "Quanto cabe?", "params": [{"id":"a","label":"A","min":1,"max":3,"step":0.5,"value":1.5},{"id":"b","label":"B","min":4,"max":12,"step":0.5,"value":7}],
+          "outputs": [{"label":"Metade de A","expr":"a/2","format":"num:2"},{"label":"B menos metade","expr":"b-a/2","format":"num:2"}] }
+        </script>
+      </div>
+    </div>
+    <figure class="media frame"><div class="media-ph"><i data-icon="image"></i></div></figure>
+  </div>
+</section>

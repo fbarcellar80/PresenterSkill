@@ -213,6 +213,9 @@ details.accordion > :not(summary) { padding-bottom: .8rem; color: var(--muted); 
 .lab-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(13rem, 1fr); gap: 1.1rem; align-items: start; }
 .lab-grid.no-controls { grid-template-columns: minmax(0, 1fr); }
 @media screen and (max-width: 980px) { .lab-grid { grid-template-columns: minmax(0, 1fr); } }
+/* Widget estreito (coluna de um .split, painel…) vira 1 coluna pelo tamanho do próprio widget, não da janela: evita controles espremidos em telas grandes */
+.widget[data-widget="lab"] { container-type: inline-size; }
+@container (max-width: 42rem) { .lab-grid { grid-template-columns: minmax(0, 1fr); } }
 .plot-host { position: relative; min-width: 0; height: clamp(12rem, 38vh, 28rem); touch-action: pan-y; }
 .plot-host svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .plot-host.tall { height: clamp(16rem, 50vh, 34rem); }
