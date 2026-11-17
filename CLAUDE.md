@@ -64,6 +64,15 @@ There is no linter/formatter configured.
 - Colors in components/slides must be CSS tokens (`var(--accent)`…), never hex, so every palette × light/dark works. Series colors default to `--c1…--c6`, which intentionally interleave brand and contrast hues.
 - `tests/e2e.cjs` builds examples with `--no-fonts`; `qa_check.cjs` ignores font/CDN network errors.
 
+## Conventions when using the skill (maintainer preferences)
+
+- **No brand assets in the skill.** Logos, photos and other organization-specific images are supplied by the user for each request and live only in that deck's folder (`decks/` is gitignored). Never commit them under `skills/` or `examples/`.
+- **Logo and cover photo are generic mechanisms**: `deck.json › logo {light, dark, alt}` (top bar, one file per theme) and `.cover-photo` + `.cover-veil` on a `layout-title` slide. In slides, pair `<img class="logo-light">` with `<img class="logo-dark">` so the right version shows per theme.
+- **Institutional / public-service / engineering material** → palette `azul_mod` (monochrome blue + gray, no green). Avoid green for status/check accents when the user asks for a neutral look: override locally with `style="--good:var(--muted)"` instead of editing the palette.
+- **Long excerpts** (norm text, quotes, derivations) go behind the notebook-and-pencil button (`<button class="info-btn read-btn" data-detail="d-…"><i data-icon="notebook-pen"></i><span>…</span></button>` + `<template id="d-…">`), not on the slide.
+- **Decks for a technical team have no review quizzes.** Prefer calculators (`lab`) that reproduce the source document's formulas, and check them against its tables before delivering.
+- A deck is delivered as the single `dist/index.html` (send it to the user; cloud sessions cannot write to the user's own folders).
+
 ## Git / release
 
 Default branch is `main` (history starts from an empty root commit). Commit style: `tipo(escopo): descrição` (`feat`, `fix`, `docs`, `test`, `chore`). To release, bump the version in the manifests + `CHANGELOG.md`, tag `vX.Y.Z`. Zip for Claude.ai upload: `cd skills && zip -r ../presenter-slides.zip presenter-slides`.
