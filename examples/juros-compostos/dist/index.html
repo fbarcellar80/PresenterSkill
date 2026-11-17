@@ -149,6 +149,15 @@ body.idle { cursor: none; }
 .brand b { color: var(--text); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .brand .dot { width: .6rem; height: .6rem; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); flex: none; }
 .brand .section-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-logo { height: 1.5rem; width: auto; flex: none; display: block; }
+/* Logo com 2 versões: .logo-light aparece no tema claro e .logo-dark no escuro (também em slides: <img class="logo-light"> + <img class="logo-dark">) */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .logo-light { display: none; }
+  :root:not([data-theme]) .logo-dark { display: block; }
+}
 .toolbar { display: flex; gap: .3rem; padding: .25rem; border-radius: 999px; background: color-mix(in srgb, var(--surface) 82%, transparent); border: 1px solid var(--border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: var(--shadow-s); }
 .tbtn {
   display: inline-grid; place-items: center; min-width: 2.35rem; height: 2.35rem; padding: 0 .55rem; gap: .35rem; grid-auto-flow: column;
@@ -285,6 +294,19 @@ body.idle { cursor: none; }
 .layout-title .slide-body, .layout-section .slide-body, .layout-closing .slide-body { justify-content: center; }
 .layout-title h1 { font-size: 3.4rem; max-width: 54rem; }
 .layout-title .lead { font-size: 1.3rem; }
+/* Capa com foto que se dissolve no fundo: <img class="cover-photo"> + <div class="cover-veil"></div> dentro do <section> */
+.slide .cover-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 64%; height: 100%; object-fit: cover; z-index: -2;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 38%); mask-image: linear-gradient(90deg, transparent 0, black 38%); }
+.slide .cover-veil { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, var(--bg) 28%, transparent 62%), linear-gradient(0deg, color-mix(in srgb, var(--accent) 26%, transparent), transparent 48%), linear-gradient(0deg, color-mix(in srgb, var(--bg) 30%, transparent), color-mix(in srgb, var(--bg) 30%, transparent)); }
+.layout-title .cover-photo ~ .slide-body { padding-right: 46%; }
+.layout-title .cover-photo ~ .slide-body h1 { font-size: 2.9rem; }
+@media screen and (max-width: 900px) {
+  .slide .cover-photo { top: auto; width: 100%; height: 36%; -webkit-mask-image: linear-gradient(0deg, black 45%, transparent); mask-image: linear-gradient(0deg, black 45%, transparent); }
+  .slide .cover-veil { background: linear-gradient(0deg, color-mix(in srgb, var(--accent) 24%, transparent), transparent 46%); }
+  .layout-title .cover-photo ~ .slide-body { padding-right: 0; }
+  .layout-title .cover-photo ~ .slide-body h1 { font-size: 2.2rem; }
+}
 .layout-title .meta { display: flex; gap: .6rem 1.4rem; flex-wrap: wrap; color: var(--muted); font-size: .95rem; margin-top: .6rem; }
 .layout-title::before, .layout-section::before, .layout-closing::before {
   background:
@@ -410,6 +432,9 @@ svg.diagram [data-detail]:hover .dg-node, svg.diagram [data-goto]:hover .dg-node
 }
 .info-btn:hover, .goto-btn:hover { background: var(--accent); color: var(--on-accent); transform: scale(1.1); }
 .info-btn svg.icon, .goto-btn svg.icon { width: 1.05rem; height: 1.05rem; }
+/* Botão "ler o texto" (caderno + lápis): abre o painel sobre o slide com o texto longo; fecha com Esc/clique fora/✕ */
+.info-btn.read-btn { width: auto; border-radius: 999px; padding: 0 .85rem 0 .65rem; gap: .45rem; grid-auto-flow: column; font: 700 .82rem var(--font-body); line-height: 1; }
+.info-btn.read-btn svg.icon { width: 1.2rem; height: 1.2rem; }
 .goto-btn { border-color: color-mix(in srgb, var(--accent2) 45%, transparent); background: color-mix(in srgb, var(--accent2) 10%, var(--surface)); color: var(--accent2); }
 .goto-btn:hover { background: var(--accent2); color: var(--on-accent); }
 .xref { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .65rem; border-radius: 999px; border: 1px dashed var(--accent2); color: var(--accent2); font: 700 .8rem var(--font-body); text-decoration: none; cursor: pointer; background: transparent; }
@@ -580,12 +605,15 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 :root[data-palette="playful"]{--bg:#F8FAFF;--surface:#FFFFFF;--surface2:#EAF0FF;--text:#101935;--muted:#475075;--border:#D5DEF7;--accent:#2563EB;--accent2:#DC2626;--accent3:#B45309;--on-accent:#FFFFFF;--x4:#059669;--x5:#7C3AED;--x6:#C46205}
 @media (prefers-color-scheme:dark){:root[data-palette="playful"]:not([data-theme="light"]){--bg:#0B1022;--surface:#141B3A;--surface2:#1D2652;--text:#EEF2FF;--muted:#A8B3DF;--border:#2A3570;--accent:#60A5FA;--accent2:#F87171;--accent3:#FACC15;--on-accent:#0B1022}}
 :root[data-palette="playful"][data-theme="dark"]{--bg:#0B1022;--surface:#141B3A;--surface2:#1D2652;--text:#EEF2FF;--muted:#A8B3DF;--border:#2A3570;--accent:#60A5FA;--accent2:#F87171;--accent3:#FACC15;--on-accent:#0B1022}
+:root[data-palette="azul_mod"]{--bg:#F4F6FA;--surface:#FFFFFF;--surface2:#E8EEFA;--text:#0C1A33;--muted:#475673;--border:#D3DCEC;--accent:#0F43A0;--accent2:#2A62B8;--accent3:#4B5B75;--on-accent:#FFFFFF;--x4:#6B7280;--x5:#B45F06;--x6:#5663C4}
+@media (prefers-color-scheme:dark){:root[data-palette="azul_mod"]:not([data-theme="light"]){--bg:#0A1530;--surface:#112043;--surface2:#182C57;--text:#EEF3FC;--muted:#A9B8D6;--border:#27406E;--accent:#7DAEF5;--accent2:#5E9BE6;--accent3:#A4B3CE;--on-accent:#0A1530}}
+:root[data-palette="azul_mod"][data-theme="dark"]{--bg:#0A1530;--surface:#112043;--surface2:#182C57;--text:#EEF3FC;--muted:#A9B8D6;--border:#27406E;--accent:#7DAEF5;--accent2:#5E9BE6;--accent3:#A4B3CE;--on-accent:#0A1530}
 :root{--font-head:"Space Grotesk","Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;--font-body:"Inter","Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif}
 </style>
 
 </head>
 <body>
-<script type="application/json" id="ps-config">{"id": "juros-compostos-o-poder-do-tempo", "title": "Juros compostos: o poder do tempo", "lang": "pt-BR", "palette": "ocean", "mode": "auto", "transition": "slide", "palettes": [{"id": "aurora", "name": "Aurora", "mood": "tecnologia, inovação, startups, produto", "colors": ["#4338CA", "#0369A1", "#A21CAF"]}, {"id": "ocean", "name": "Oceano", "mood": "corporativo, finanças, saúde, confiança", "colors": ["#0369A1", "#0F766E", "#4F46E5"]}, {"id": "forest", "name": "Floresta", "mood": "sustentabilidade, ciência, educação, bem-estar", "colors": ["#15803D", "#0F766E", "#A16207"]}, {"id": "sunset", "name": "Pôr do sol", "mood": "marketing, criatividade, eventos, storytelling", "colors": ["#C2410C", "#BE185D", "#7E22CE"]}, {"id": "graphite", "name": "Grafite", "mood": "executivo, minimalista, jurídico, relatórios sóbrios", "colors": ["#2563EB", "#475569", "#B45309"]}, {"id": "rose", "name": "Rosé", "mood": "moda, social, saúde da mulher, lifestyle, design", "colors": ["#BE123C", "#7C3AED", "#0E7490"]}, {"id": "amber", "name": "Âmbar", "mood": "premium, história, investimentos, gastronomia", "colors": ["#B45309", "#334155", "#0F766E"]}, {"id": "earth", "name": "Terra", "mood": "cultura, arquitetura, alimentos, artesanal, geografia", "colors": ["#B5441F", "#4D7C0F", "#1D4E89"]}, {"id": "playful", "name": "Primário", "mood": "educação infantil/juvenil, jogos, workshops enérgicos", "colors": ["#2563EB", "#DC2626", "#B45309"]}]}</script>
+<script type="application/json" id="ps-config">{"id": "juros-compostos-o-poder-do-tempo", "title": "Juros compostos: o poder do tempo", "lang": "pt-BR", "palette": "ocean", "mode": "auto", "transition": "slide", "palettes": [{"id": "aurora", "name": "Aurora", "mood": "tecnologia, inovação, startups, produto", "colors": ["#4338CA", "#0369A1", "#A21CAF"]}, {"id": "ocean", "name": "Oceano", "mood": "corporativo, finanças, saúde, confiança", "colors": ["#0369A1", "#0F766E", "#4F46E5"]}, {"id": "forest", "name": "Floresta", "mood": "sustentabilidade, ciência, educação, bem-estar", "colors": ["#15803D", "#0F766E", "#A16207"]}, {"id": "sunset", "name": "Pôr do sol", "mood": "marketing, criatividade, eventos, storytelling", "colors": ["#C2410C", "#BE185D", "#7E22CE"]}, {"id": "graphite", "name": "Grafite", "mood": "executivo, minimalista, jurídico, relatórios sóbrios", "colors": ["#2563EB", "#475569", "#B45309"]}, {"id": "rose", "name": "Rosé", "mood": "moda, social, saúde da mulher, lifestyle, design", "colors": ["#BE123C", "#7C3AED", "#0E7490"]}, {"id": "amber", "name": "Âmbar", "mood": "premium, história, investimentos, gastronomia", "colors": ["#B45309", "#334155", "#0F766E"]}, {"id": "earth", "name": "Terra", "mood": "cultura, arquitetura, alimentos, artesanal, geografia", "colors": ["#B5441F", "#4D7C0F", "#1D4E89"]}, {"id": "playful", "name": "Primário", "mood": "educação infantil/juvenil, jogos, workshops enérgicos", "colors": ["#2563EB", "#DC2626", "#B45309"]}, {"id": "azul_mod", "name": "Azul institucional", "mood": "institucional, serviço público, engenharia, relatórios técnicos", "colors": ["#0F43A0", "#2A62B8", "#4B5B75"]}]}</script>
 <svg xmlns="http://www.w3.org/2000/svg" class="ps-sprite" aria-hidden="true" focusable="false">
 <defs>
 <marker id="ps-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z"/></marker>
@@ -666,6 +694,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2"/></symbol>
 <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0Z"/></symbol>
 <symbol id="i-wind" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/></symbol>
+<symbol id="i-notebook-pen" viewBox="0 0 24 24"><path d="M15 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M3 7h4M3 11h4M3 15h4"/><path d="M19 3.6a1.8 1.8 0 0 1 2.5 2.5L13.2 14.4l-3.4 1 1-3.4Z"/></symbol>
 </svg>
 
 <main class="deck" id="deck">
@@ -1936,7 +1965,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
   const progress = el('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': 1, 'aria-valuemax': N }, el('i'));
   const live = el('div', { class: 'sr-only', 'aria-live': 'polite', 'aria-atomic': 'true' });
   document.body.append(
-    el('div', { class: 'chrome-top' }, el('div', { class: 'brand' }, el('span', { class: 'dot' }), brandTitle, el('span', { class: 'sep', 'aria-hidden': 'true' }, '·'), sectionLabel), el('div', { class: 'toolbar', role: 'toolbar', 'aria-label': 'Controles' }, bOverview, bNotes, bTheme, bSettings, bFull, bHelp)),
+    el('div', { class: 'chrome-top' }, el('div', { class: 'brand' }, ...(cfg.logo ? [el('img', { class: 'brand-logo logo-light', src: cfg.logo.light, alt: cfg.logo.alt }), el('img', { class: 'brand-logo logo-dark', src: cfg.logo.dark, alt: '' })] : [el('span', { class: 'dot' })]), brandTitle, el('span', { class: 'sep', 'aria-hidden': 'true' }, '·'), sectionLabel), el('div', { class: 'toolbar', role: 'toolbar', 'aria-label': 'Controles' }, bOverview, bNotes, bTheme, bSettings, bFull, bHelp)),
     el('div', { class: 'chrome-bottom' }, el('span'), el('div', { class: 'nav-btns toolbar' }, bPrev, counter, bNext)),
     progress, live);
 

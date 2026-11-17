@@ -33,6 +33,8 @@ Notas do apresentador: `<aside class="notes">…</aside>` (tecla **N**). Ícones
 </section>
 ```
 Com ilustração à direita: envolva texto e `<figure class="media">` em `<div class="split wide-visual">` (veja `examples/juros-compostos`).
+Com **foto da organização** que se dissolve no fundo (largura da tela, sem moldura): ponha, dentro do `<section class="slide layout-title">` e antes do `.slide-body`,
+`<img class="cover-photo" src="imagens/sede.jpg" alt="…"><div class="cover-veil"></div>`. O texto fica à esquerda e, no celular, a foto desce para a base.
 
 ## Seção (divisória)
 ```html

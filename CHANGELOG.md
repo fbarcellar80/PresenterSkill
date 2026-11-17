@@ -2,6 +2,14 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Adicionado
+- Paleta `azul_mod` (azul institucional monocromático com cinza de apoio, sem verde), validada por contraste em claro e escuro.
+- `deck.json › logo` (`{light, dark, alt}`): logo na barra superior de todos os slides, com versão para tema claro e outra para escuro; classes `.logo-light`/`.logo-dark` para usar o par nos slides.
+- Capa com foto (`.cover-photo` + `.cover-veil`): foto à direita que se dissolve no fundo, responsiva.
+- Ícone `notebook-pen` (caderno e lápis) no sprite e botão-pílula `.info-btn.read-btn`: abre um texto longo (trecho de norma, citação, dedução) em painel sobre o slide e o recolhe com Esc, clique fora ou ✕.
+
 ## [0.1.0] — 2026-11-14
 
 ### Adicionado

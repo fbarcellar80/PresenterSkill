@@ -110,6 +110,7 @@ Escolha pelo **humor do tema** (detalhes de teoria de cores em `02-design-system
 | Premium, história, investimentos, gastronomia | `amber` | `editorial` |
 | Cultura, arquitetura, alimentos, geografia | `earth` | `editorial` ou `friendly` |
 | Infantil/juvenil, jogos, oficinas enérgicas | `playful` | `friendly` |
+| Institucional, serviço público, engenharia, normas e relatórios técnicos | `azul_mod` | `technical` ou `modern` |
 
 Modo: `"auto"` (segue o sistema; o espectador troca com `T`). Salas escuras/projetor forte: considere `"dark"` fixo
 como ponto de partida — o usuário ainda pode alternar.

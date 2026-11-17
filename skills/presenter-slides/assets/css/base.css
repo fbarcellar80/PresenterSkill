@@ -132,6 +132,15 @@ body.idle { cursor: none; }
 .brand b { color: var(--text); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .brand .dot { width: .6rem; height: .6rem; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); flex: none; }
 .brand .section-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-logo { height: 1.5rem; width: auto; flex: none; display: block; }
+/* Logo com 2 versões: .logo-light aparece no tema claro e .logo-dark no escuro (também em slides: <img class="logo-light"> + <img class="logo-dark">) */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .logo-light { display: none; }
+  :root:not([data-theme]) .logo-dark { display: block; }
+}
 .toolbar { display: flex; gap: .3rem; padding: .25rem; border-radius: 999px; background: color-mix(in srgb, var(--surface) 82%, transparent); border: 1px solid var(--border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: var(--shadow-s); }
 .tbtn {
   display: inline-grid; place-items: center; min-width: 2.35rem; height: 2.35rem; padding: 0 .55rem; gap: .35rem; grid-auto-flow: column;

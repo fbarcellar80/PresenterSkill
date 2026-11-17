@@ -23,6 +23,19 @@
 .layout-title .slide-body, .layout-section .slide-body, .layout-closing .slide-body { justify-content: center; }
 .layout-title h1 { font-size: 3.4rem; max-width: 54rem; }
 .layout-title .lead { font-size: 1.3rem; }
+/* Capa com foto que se dissolve no fundo: <img class="cover-photo"> + <div class="cover-veil"></div> dentro do <section> */
+.slide .cover-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 64%; height: 100%; object-fit: cover; z-index: -2;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 38%); mask-image: linear-gradient(90deg, transparent 0, black 38%); }
+.slide .cover-veil { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, var(--bg) 28%, transparent 62%), linear-gradient(0deg, color-mix(in srgb, var(--accent) 26%, transparent), transparent 48%), linear-gradient(0deg, color-mix(in srgb, var(--bg) 30%, transparent), color-mix(in srgb, var(--bg) 30%, transparent)); }
+.layout-title .cover-photo ~ .slide-body { padding-right: 46%; }
+.layout-title .cover-photo ~ .slide-body h1 { font-size: 2.9rem; }
+@media screen and (max-width: 900px) {
+  .slide .cover-photo { top: auto; width: 100%; height: 36%; -webkit-mask-image: linear-gradient(0deg, black 45%, transparent); mask-image: linear-gradient(0deg, black 45%, transparent); }
+  .slide .cover-veil { background: linear-gradient(0deg, color-mix(in srgb, var(--accent) 24%, transparent), transparent 46%); }
+  .layout-title .cover-photo ~ .slide-body { padding-right: 0; }
+  .layout-title .cover-photo ~ .slide-body h1 { font-size: 2.2rem; }
+}
 .layout-title .meta { display: flex; gap: .6rem 1.4rem; flex-wrap: wrap; color: var(--muted); font-size: .95rem; margin-top: .6rem; }
 .layout-title::before, .layout-section::before, .layout-closing::before {
   background:
@@ -148,6 +161,9 @@ svg.diagram [data-detail]:hover .dg-node, svg.diagram [data-goto]:hover .dg-node
 }
 .info-btn:hover, .goto-btn:hover { background: var(--accent); color: var(--on-accent); transform: scale(1.1); }
 .info-btn svg.icon, .goto-btn svg.icon { width: 1.05rem; height: 1.05rem; }
+/* Botão "ler o texto" (caderno + lápis): abre o painel sobre o slide com o texto longo; fecha com Esc/clique fora/✕ */
+.info-btn.read-btn { width: auto; border-radius: 999px; padding: 0 .85rem 0 .65rem; gap: .45rem; grid-auto-flow: column; font: 700 .82rem var(--font-body); line-height: 1; }
+.info-btn.read-btn svg.icon { width: 1.2rem; height: 1.2rem; }
 .goto-btn { border-color: color-mix(in srgb, var(--accent2) 45%, transparent); background: color-mix(in srgb, var(--accent2) 10%, var(--surface)); color: var(--accent2); }
 .goto-btn:hover { background: var(--accent2); color: var(--on-accent); }
 .xref { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .65rem; border-radius: 999px; border: 1px dashed var(--accent2); color: var(--accent2); font: 700 .8rem var(--font-body); text-decoration: none; cursor: pointer; background: transparent; }

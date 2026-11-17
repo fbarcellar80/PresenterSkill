@@ -6,7 +6,7 @@ description: Cria apresentações de slides modernas, responsivas e interativas 
 # Presenter Slides — apresentações web interativas
 
 Gera um deck como **um único `.html`** que abre em qualquer navegador (offline), com:
-design moderno e fluido (celular → projetor), **modo claro/escuro/auto**, **9 paletas** validadas (WCAG),
+design moderno e fluido (celular → projetor), **modo claro/escuro/auto**, **10 paletas** validadas (WCAG),
 navegação por **teclado, clicker e toque**, **ícones que expandem ideias** (painel "saiba mais", dicas,
 saltos entre slides com botão voltar) e **widgets interativos** (curvas e simulações com sliders, calculadoras,
 gráficos de dados, simulador estatístico, quiz, abas).
@@ -39,7 +39,7 @@ Se o usuário pediu para aprovar o plano antes, pare aqui; caso contrário, siga
 ```bash
 python3 $SKILL_DIR/scripts/new_deck.py <pasta> --title "…" --subtitle "…" --lang pt-BR --palette ocean --fonts modern
 ```
-Cria `deck.json` + `slides.html` (capa, roteiro, exemplo, fechamento). Paletas: `aurora ocean forest sunset graphite rose amber earth playful`.
+Cria `deck.json` + `slides.html` (capa, roteiro, exemplo, fechamento). Paletas: `aurora ocean forest sunset graphite rose amber earth playful azul_mod`.
 Fontes: `modern editorial friendly technical system`. Cores da marca do usuário → `palettes_custom` (ver `references/02-design-system.md`).
 
 ### 4. Escrever os slides (`slides.html`)

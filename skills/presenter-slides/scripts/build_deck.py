@@ -100,20 +100,25 @@ _ATTR = re.compile(r'(\b(?:src|poster|data-src|data-bg-image)\s*=\s*)(["\'])([^"
 _URL = re.compile(r'url\(\s*(["\']?)([^)"\']+?\.' + _IMG_EXT + r')\1\s*\)', re.I)
 
 
+def file_data_uri(base: Path, rel: str, max_kb: int, warn) -> str | None:
+    """Data URI de um arquivo local (None se for URL, não existir ou passar de max_kb)."""
+    if re.match(r"^(https?:|data:|//|#|/)", rel):
+        return None
+    p = (base / rel).resolve()
+    if not p.is_file():
+        warn(f"imagem não encontrada: {rel}")
+        return None
+    size = p.stat().st_size
+    if size > max_kb * 1024:
+        warn(f"imagem grande demais para embutir ({size // 1024} KB > {max_kb} KB), mantida como link relativo: {rel}")
+        return None
+    mime = mimetypes.guess_type(p.name)[0] or "application/octet-stream"
+    return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
+
+
 def embed_assets(html: str, base: Path, max_kb: int, warn) -> str:
     def data_uri(rel: str) -> str | None:
-        if re.match(r"^(https?:|data:|//|#|/)", rel):
-            return None
-        p = (base / rel).resolve()
-        if not p.is_file():
-            warn(f"imagem não encontrada: {rel}")
-            return None
-        size = p.stat().st_size
-        if size > max_kb * 1024:
-            warn(f"imagem grande demais para embutir ({size // 1024} KB > {max_kb} KB), mantida como link relativo: {rel}")
-            return None
-        mime = mimetypes.guess_type(p.name)[0] or "application/octet-stream"
-        return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
+        return file_data_uri(base, rel, max_kb, warn)
 
     def attr(m):
         d = data_uri(m.group(3))
@@ -174,6 +179,18 @@ def build(deck_dir: str | Path, out: str | Path | None = None, fonts: bool = Tru
         "palettes": [{"id": k, "name": palettes[k].get("name", k), "mood": palettes[k].get("mood", ""),
                       "colors": [palettes[k]["light"]["accent"], palettes[k]["light"]["accent2"], palettes[k]["light"]["accent3"]]} for k in allowed],
     }
+
+    logo = meta.get("logo")
+    if logo:
+        if isinstance(logo, str):
+            logo = {"light": logo, "dark": logo}
+        if not isinstance(logo, dict) or not (logo.get("light") or logo.get("dark")):
+            raise DeckError('logo deve ser um caminho ou {"light": "...", "dark": "...", "alt": "..."}')
+        lg = {"alt": logo.get("alt") or meta["title"]}
+        for k in ("light", "dark"):
+            rel = logo.get(k) or logo.get("light" if k == "dark" else "dark")
+            lg[k] = (file_data_uri(deck_dir, rel, max_embed_kb, warn) if embed else None) or rel
+        runtime["logo"] = lg
 
     css = "\n".join((ASSETS / "css" / n).read_text(encoding="utf-8") for n in CSS_ORDER)
     fcss, flink = font_head(meta.get("fonts", "modern"), fonts and not meta.get("offline", False))

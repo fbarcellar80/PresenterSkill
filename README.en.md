@@ -11,7 +11,7 @@ Works offline in any browser, from phone to projector.
 - **Interactive where it matters**: curves, statistics and calculations become slider-driven labs (`lab`), data charts, a sampling
   simulator (CLT), quiz, tabs — all in plain HTML/CSS/JS, **zero runtime dependencies**.
 - **Icons that expand ideas**: ⓘ opens a side panel, cross-slide jumps with a **Back** button, glossary tips, hotspots on figures.
-- **Market-grade UI/UX**: fluid type, 9 WCAG-validated palettes, light/dark/auto, 5 font pairings, custom brand palette.
+- **Market-grade UI/UX**: fluid type, 10 WCAG-validated palettes, light/dark/auto, 5 font pairings, custom brand palette.
 - **Keyboard / clicker / touch**: `← →`, `PgUp/PgDn`, `Space`, `O` overview, `N` notes, `F` fullscreen, `B` blackout, `T` theme, `P` palette.
 - **Accessible**, printable to PDF (1 slide/page), and **self-verifying** (static validator + visual QA with screenshots).
 
