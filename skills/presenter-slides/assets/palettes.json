@@ -53,5 +53,11 @@
     "x4": "#059669", "x5": "#7C3AED", "x6": "#C46205",
     "light": {"bg": "#F8FAFF", "surface": "#FFFFFF", "surface2": "#EAF0FF", "text": "#101935", "muted": "#475075", "border": "#D5DEF7", "accent": "#2563EB", "accent2": "#DC2626", "accent3": "#B45309", "onAccent": "#FFFFFF"},
     "dark":  {"bg": "#0B1022", "surface": "#141B3A", "surface2": "#1D2652", "text": "#EEF2FF", "muted": "#A8B3DF", "border": "#2A3570", "accent": "#60A5FA", "accent2": "#F87171", "accent3": "#FACC15", "onAccent": "#0B1022"}
+  },
+  "azul_mod": {
+    "name": "Azul institucional", "scheme": "monocromática (azul-royal) + cinza-azulado de apoio", "mood": "institucional, serviço público, engenharia, relatórios técnicos",
+    "x4": "#6B7280", "x5": "#B45F06", "x6": "#5663C4",
+    "light": {"bg": "#F4F6FA", "surface": "#FFFFFF", "surface2": "#E8EEFA", "text": "#0C1A33", "muted": "#475673", "border": "#D3DCEC", "accent": "#0F43A0", "accent2": "#2A62B8", "accent3": "#4B5B75", "onAccent": "#FFFFFF"},
+    "dark":  {"bg": "#0A1530", "surface": "#112043", "surface2": "#182C57", "text": "#EEF3FC", "muted": "#A9B8D6", "border": "#27406E", "accent": "#7DAEF5", "accent2": "#5E9BE6", "accent3": "#A4B3CE", "onAccent": "#0A1530"}
   }
 }

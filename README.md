@@ -26,7 +26,7 @@ e navegação por teclado ou *clicker*. Funciona offline, em qualquer navegador,
 | 🧭 **Planeja antes de escrever** | tese, arco narrativo, tabela de slides, **mapa de recursos gráficos**, paleta/fontes e orçamento de interatividade (`PLAN.md`) |
 | 📈 **Interatividade onde importa** | curvas, estatística e cálculos viram **simuladores com sliders** (`lab`), gráficos de dados com legenda/tooltip, simulador de amostragem (TCL), quiz, abas |
 | 💡 **Ícones que expandem a ideia** | botão ⓘ abre painel "saiba mais"; saltos entre slides com botão **Voltar**; dicas de glossário; *hotspots* em figuras |
-| 🎨 **Design de mercado** | tipografia fluida, 9 paletas validadas (contraste **WCAG**), **claro/escuro/auto**, 5 pares de fontes, paleta de marca própria |
+| 🎨 **Design de mercado** | tipografia fluida, 10 paletas validadas (contraste **WCAG**), **claro/escuro/auto**, 5 pares de fontes, paleta de marca própria |
 | ⌨️ **Controle total** | `← →`, `PgUp/PgDn` (clickers), `Espaço`, toque, `O` visão geral, `N` notas, `F` tela cheia, `B` tela preta, `T` tema, `P` paleta |
 | ♿ **Acessível** | navegação por teclado, foco visível, `aria`, `prefers-reduced-motion`, contraste ≥ 4,5:1 |
 | 📄 **Exporta** | arquivo único (e-mail, drive, GitHub Pages) e **PDF** pelo navegador (1 slide/página) |
