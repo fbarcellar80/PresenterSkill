@@ -50,6 +50,7 @@ class Slide:
         self.list_items: list[int] = []
         self.gotos: list[str] = []
         self.details: list[str] = []
+        self.popups: list[str] = []
         self.icons: list[str] = []
         self.imgs: list[tuple[str, str | None]] = []   # (src, alt)
         self.ids: set[str] = set()
@@ -127,6 +128,8 @@ class Parser(HTMLParser):
                 s.gotos.append(a[k])
         if "data-detail" in a:
             s.details.append(a["data-detail"])
+        if "data-popup" in a:
+            s.popups.append(a["data-popup"])
         for k in ("data-icon", "data-tab-icon"):
             if k in a:
                 s.icons.append(a[k])
@@ -334,6 +337,9 @@ def validate(deck_dir: Path, strict: bool = False):
             err(f'deck.json: fonts "{meta.get("fonts")}" inexistente ({", ".join(FONT_SETS)})')
         if meta.get("mode", "auto") not in ("auto", "light", "dark"):
             err('deck.json: mode deve ser auto, light ou dark')
+        gl = meta.get("glossary")
+        if gl is not None and not (isinstance(gl, dict) and all(isinstance(k, str) and isinstance(v, str) for k, v in gl.items())):
+            err('deck.json: glossary deve ser um objeto {"termo": "significado"}')
         lg = meta.get("logo")
         for rel in ([lg] if isinstance(lg, str) else [lg.get("light"), lg.get("dark")] if isinstance(lg, dict) else []):
             if rel and not re.match(r"^(https?:|data:|//)", rel) and not (deck_dir / rel).is_file():
@@ -406,6 +412,9 @@ def validate(deck_dir: Path, strict: bool = False):
         for d in s.details:
             if d not in p.all_ids:
                 err(f"{s.label}: data-detail=\"{d}\" não tem <template id=\"{d}\"> correspondente")
+        for d in s.popups:
+            if d not in p.all_ids:
+                err(f"{s.label}: data-popup=\"{d}\" não tem <template id=\"{d}\"> correspondente")
     if len(slides) > 30:
         warn(f"deck com {len(slides)} slides — confirme se cabe no tempo previsto (≈1–2 min por slide)")
     if not any_interactive:

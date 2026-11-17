@@ -53,6 +53,7 @@ Princípios que valem sempre:
 - Use as **classes do sistema e as variáveis CSS** (`var(--accent)` …) — nunca cores fixas — para o tema claro/escuro funcionar.
 - Texto curto: ≤ ~60 palavras visíveis/slide, ≤ 6 itens de lista. O que sobra vai para `<aside class="notes">` (notas do
   apresentador) ou atrás de um ícone `info-btn` + `<template>`.
+- **Explicação de cálculo que não sustenta o argumento** (como se calcula, tabela de apoio, simulador de consulta) vai em **pop-up** (`data-popup`), não em slide na sequência; toda fórmula leva `glossary` (termo → significado simples).
 - **Ícones de aprofundamento**: onde um termo/fórmula/dado merece mais explicação, ponha `info-btn`; onde retoma algo
   de outro slide, `goto-btn`/`xref` (o espectador volta com o botão "Voltar"). Planeje-os já no plano.
 - Todo gráfico/simulador tem **título, eixos rotulados, unidades** e uma **frase `insight`** dizendo o que observar.
@@ -88,7 +89,7 @@ Pedidos de ajuste: edite `slides.html`/`deck.json` e recompile (não edite o `di
 **Atributos do slide**: `id`, `data-title`, `data-icon`, `data-section` (rótulo no topo), `data-bg="plain|grid|dots"`.
 **Layouts**: `layout-title`, `layout-section`, `layout-closing`, `layout-big-stat`, `layout-quote`; corpo: `.slide-head`, `.split(.reverse/.wide-visual)`, `.cols/.cols-3/.cols-4`, `.cards`, `.stats`, `.steps`, `.timeline`.
 **Revelar em passos**: `data-step` (mesmo número = juntos). **Entrada animada**: `data-anim="up|left|right|zoom"` (grades `.cards/.stats/.steps/.timeline/.stagger` já animam em cascata).
-**Aprofundar**: `<button class="info-btn" data-detail="ID">` + `<template id="ID">…</template>` · `data-tip="texto"` (+ `.term`) · `.hotspot` sobre figuras.
+**Aprofundar**: `<button class="info-btn" data-detail="ID">` + `<template id="ID">…</template>` · `data-tip="texto"` (+ `.term`) · `.hotspot` sobre figuras. **Pop-up** sobre o slide (cálculo, simulador, quadro de apoio): `<button data-popup="ID">` + `<template id="ID" data-title="…">`. **Fórmulas**: `.formula`/`.fx` + `glossary` no `deck.json` → cada termo explica-se ao passar o mouse.
 **Saltar**: `<a class="xref" data-goto="id-do-slide">` · `<button class="goto-btn" data-goto="id">` (aparece o botão **Voltar**).
 **Widgets**: `<div class="widget" data-widget="lab|chart|sampler|quiz|compare|tabs"><script type="application/json">{…}</script></div>`.
 **Cores em gráficos**: deixe automático ou use `c1…c6` (alternam tons do tema e cores de contraste), `accent`, `accent2`, `accent3`, `good`, `warn`, `bad`.

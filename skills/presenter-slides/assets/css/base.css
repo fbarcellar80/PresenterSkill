@@ -212,14 +212,33 @@ body.idle { cursor: none; }
 .drawer .close { align-self: flex-end; }
 .drawer h3 { font-size: 1.35rem; }
 .drawer-content { display: grid; gap: .85rem; align-content: start; }
+/* Pop-up (modal) sobre o slide: <button data-popup="id"> + <template id="id" data-title="…">; fecha com ✕, Esc ou clique fora */
+.popup-scrim { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / .5); opacity: 0; transition: opacity .28s; }
+.popup-scrim.open { opacity: 1; }
+.popup {
+  position: fixed; z-index: 51; left: 50%; top: 50%; width: min(64rem, 94vw); max-height: 90vh; display: flex; flex-direction: column; font-size: .95rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-l); box-shadow: var(--shadow-m);
+  opacity: 0; visibility: hidden; transform: translate(-50%, -47%) scale(.97); transition: transform .32s var(--ease), opacity .26s, visibility .26s;
+}
+.popup.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+.popup[data-size="narrow"] { width: min(40rem, 94vw); }
+.popup-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.1rem .8rem 1.4rem; background: var(--surface); border-bottom: 1px solid var(--border); border-radius: var(--r-l) var(--r-l) 0 0; flex: none; }
+.popup-head h3 { font-size: 1.2rem; }
+.popup-body { overflow: auto; padding: 1.2rem 1.4rem 1.6rem; display: grid; gap: 1rem; align-content: start; }
+@media screen and (max-width: 720px) {
+  .popup { left: 0; top: auto; bottom: 0; width: 100vw; max-height: 92vh; border-radius: var(--r-l) var(--r-l) 0 0; transform: translateY(105%); }
+  .popup.open { transform: none; }
+}
 @media screen and (max-width: 720px) {
   .drawer { top: auto; width: 100%; max-height: 78vh; border-left: 0; border-top: 1px solid var(--border); border-radius: var(--r-l) var(--r-l) 0 0; transform: translateY(105%); }
   .drawer.open { transform: none; }
 }
 .tip {
-  position: fixed; z-index: 60; max-width: 18rem; padding: .6rem .8rem; border-radius: var(--r-s); font-size: .82rem; line-height: 1.4;
+  position: fixed; z-index: 60; max-width: 19rem; padding: .6rem .8rem; border-radius: var(--r-s); font-size: .82rem; line-height: 1.4;
   background: var(--text); color: var(--bg); box-shadow: var(--shadow-m); pointer-events: none;
+  opacity: 0; visibility: hidden; transform: translateY(.3rem); transition: opacity .22s ease, transform .22s var(--ease), visibility .22s;
 }
+.tip.on { opacity: 1; visibility: visible; transform: none; }
 
 /* ---------- Responsivo ---------- */
 @media screen and (max-width: 760px) {
@@ -241,7 +260,7 @@ body.idle { cursor: none; }
   .slide { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; width: 1280px; height: 720px; overflow: hidden; break-after: page; page-break-after: always; }
   .slide:last-of-type { break-after: auto; page-break-after: auto; }
   body > .sr-only { display: none !important; } /* região aria-live: 1px a mais gerava uma página extra */
-  .chrome-top, .chrome-bottom, .progress, .popover, .back-chip, .overview, .notes-panel, .drawer, .drawer-scrim { display: none !important; }
+  .chrome-top, .chrome-bottom, .progress, .popover, .back-chip, .overview, .notes-panel, .drawer, .drawer-scrim, .popup, .popup-scrim, .tip { display: none !important; }
   [data-step] { opacity: 1 !important; visibility: visible !important; transform: none !important; }
   .ps-draw { stroke-dashoffset: 0 !important; } .ps-bar { transform: none !important; } .ps-slice { opacity: 1 !important; } /* gráficos no estado final */
   [data-anim] { opacity: 1 !important; transform: none !important; }

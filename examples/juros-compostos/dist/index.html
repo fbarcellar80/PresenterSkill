@@ -229,14 +229,33 @@ body.idle { cursor: none; }
 .drawer .close { align-self: flex-end; }
 .drawer h3 { font-size: 1.35rem; }
 .drawer-content { display: grid; gap: .85rem; align-content: start; }
+/* Pop-up (modal) sobre o slide: <button data-popup="id"> + <template id="id" data-title="…">; fecha com ✕, Esc ou clique fora */
+.popup-scrim { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / .5); opacity: 0; transition: opacity .28s; }
+.popup-scrim.open { opacity: 1; }
+.popup {
+  position: fixed; z-index: 51; left: 50%; top: 50%; width: min(64rem, 94vw); max-height: 90vh; display: flex; flex-direction: column; font-size: .95rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-l); box-shadow: var(--shadow-m);
+  opacity: 0; visibility: hidden; transform: translate(-50%, -47%) scale(.97); transition: transform .32s var(--ease), opacity .26s, visibility .26s;
+}
+.popup.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+.popup[data-size="narrow"] { width: min(40rem, 94vw); }
+.popup-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.1rem .8rem 1.4rem; background: var(--surface); border-bottom: 1px solid var(--border); border-radius: var(--r-l) var(--r-l) 0 0; flex: none; }
+.popup-head h3 { font-size: 1.2rem; }
+.popup-body { overflow: auto; padding: 1.2rem 1.4rem 1.6rem; display: grid; gap: 1rem; align-content: start; }
+@media screen and (max-width: 720px) {
+  .popup { left: 0; top: auto; bottom: 0; width: 100vw; max-height: 92vh; border-radius: var(--r-l) var(--r-l) 0 0; transform: translateY(105%); }
+  .popup.open { transform: none; }
+}
 @media screen and (max-width: 720px) {
   .drawer { top: auto; width: 100%; max-height: 78vh; border-left: 0; border-top: 1px solid var(--border); border-radius: var(--r-l) var(--r-l) 0 0; transform: translateY(105%); }
   .drawer.open { transform: none; }
 }
 .tip {
-  position: fixed; z-index: 60; max-width: 18rem; padding: .6rem .8rem; border-radius: var(--r-s); font-size: .82rem; line-height: 1.4;
+  position: fixed; z-index: 60; max-width: 19rem; padding: .6rem .8rem; border-radius: var(--r-s); font-size: .82rem; line-height: 1.4;
   background: var(--text); color: var(--bg); box-shadow: var(--shadow-m); pointer-events: none;
+  opacity: 0; visibility: hidden; transform: translateY(.3rem); transition: opacity .22s ease, transform .22s var(--ease), visibility .22s;
 }
+.tip.on { opacity: 1; visibility: visible; transform: none; }
 
 /* ---------- Responsivo ---------- */
 @media screen and (max-width: 760px) {
@@ -258,7 +277,7 @@ body.idle { cursor: none; }
   .slide { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; width: 1280px; height: 720px; overflow: hidden; break-after: page; page-break-after: always; }
   .slide:last-of-type { break-after: auto; page-break-after: auto; }
   body > .sr-only { display: none !important; } /* região aria-live: 1px a mais gerava uma página extra */
-  .chrome-top, .chrome-bottom, .progress, .popover, .back-chip, .overview, .notes-panel, .drawer, .drawer-scrim { display: none !important; }
+  .chrome-top, .chrome-bottom, .progress, .popover, .back-chip, .overview, .notes-panel, .drawer, .drawer-scrim, .popup, .popup-scrim, .tip { display: none !important; }
   [data-step] { opacity: 1 !important; visibility: visible !important; transform: none !important; }
   .ps-draw { stroke-dashoffset: 0 !important; } .ps-bar { transform: none !important; } .ps-slice { opacity: 1 !important; } /* gráficos no estado final */
   [data-anim] { opacity: 1 !important; transform: none !important; }
@@ -440,6 +459,10 @@ svg.diagram [data-detail]:hover .dg-node, svg.diagram [data-goto]:hover .dg-node
 .xref { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .65rem; border-radius: 999px; border: 1px dashed var(--accent2); color: var(--accent2); font: 700 .8rem var(--font-body); text-decoration: none; cursor: pointer; background: transparent; }
 .xref:hover { background: color-mix(in srgb, var(--accent2) 12%, transparent); }
 .term { border-bottom: 2px dotted var(--accent); cursor: help; }
+/* Fórmulas com termos explicados: .formula (bloco) ou .fx (em linha); o glossário vem de deck.json › glossary e/ou data-terms */
+.fx { font-family: var(--font-mono); font-size: .94em; }
+.fx-term { border-bottom-style: dotted; border-radius: 2px; transition: background-color .15s; }
+.fx-term:hover, .fx-term:focus-visible { background: color-mix(in srgb, var(--accent) 14%, transparent); outline: none; }
 .hotspot-layer { position: relative; }
 .hotspot {
   position: absolute; left: var(--x, 50%); top: var(--y, 50%); transform: translate(-50%, -50%); width: 2rem; height: 2rem; border-radius: 50%; border: 0; padding: 0;
@@ -695,6 +718,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0Z"/></symbol>
 <symbol id="i-wind" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/></symbol>
 <symbol id="i-notebook-pen" viewBox="0 0 24 24"><path d="M15 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M3 7h4M3 11h4M3 15h4"/><path d="M19 3.6a1.8 1.8 0 0 1 2.5 2.5L13.2 14.4l-3.4 1 1-3.4Z"/></symbol>
+<symbol id="i-cycle" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
 </svg>
 
 <main class="deck" id="deck">
@@ -1314,6 +1338,39 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
   PS.cfg = cfg;
   PS.lang = cfg.lang || document.documentElement.lang || 'pt-BR';
 
+  // ---------- termos de fórmulas com significado ao passar o mouse ----------
+  // Glossário do deck (deck.json › glossary) + data-terms local ("A=texto; B=texto" ou JSON). Atua em .formula, .fx e [data-terms].
+  const WORD = '0-9A-Za-z_\\u00C0-\\u024F';
+  const parseTerms = (s) => {
+    s = (s || '').trim(); if (!s) return {};
+    if (s[0] === '{') { try { return JSON.parse(s); } catch (e) { return {}; } }
+    const o = {}; s.split(';').forEach((p) => { const i = p.indexOf('='); if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim(); }); return o;
+  };
+  PS.decorateTerms = function (root, opts) {
+    if (!root) return;
+    const targets = (opts && opts.force) ? [root] : [...(root.matches && root.matches('.formula, .fx, [data-terms]') ? [root] : []), ...root.querySelectorAll('.formula, .fx, [data-terms]')];
+    targets.forEach((t) => {
+      if (t.dataset && t.dataset.terms === 'off') return;
+      const map = Object.assign({}, cfg.glossary || {}, parseTerms(t.dataset && t.dataset.terms));
+      const keys = Object.keys(map).filter((k) => map[k]).sort((a, b) => b.length - a.length);
+      if (!keys.length) return;
+      const re = new RegExp('(^|[^' + WORD + '])(' + keys.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![' + WORD + '])', 'g');
+      const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest('.term, script, style, template')) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+      const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach((n) => {
+        const text = n.nodeValue; re.lastIndex = 0; let m, last = 0; let frag = null;
+        while ((m = re.exec(text))) {
+          frag = frag || document.createDocumentFragment();
+          const start = m.index + m[1].length;
+          if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
+          const sp = document.createElement('span'); sp.className = 'term fx-term'; sp.dataset.tip = map[m[2]]; sp.tabIndex = 0; sp.textContent = m[2]; frag.appendChild(sp);
+          last = start + m[2].length;
+        }
+        if (frag) { if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last))); n.parentNode.replaceChild(frag, n); }
+      });
+    });
+  };
+
   // ---------- i18n da interface ----------
   const I18N = {
     pt: { prev: 'Slide anterior', next: 'Próximo slide', overview: 'Visão geral', theme: 'Tema', settings: 'Ajustes', fullscreen: 'Tela cheia', help: 'Atalhos', notes: 'Notas do apresentador', close: 'Fechar', back: 'Voltar para o slide', auto: 'Auto', light: 'Claro', dark: 'Escuro', palette: 'Paleta de cores', textsize: 'Tamanho do texto', motion: 'Animações', mode: 'Modo', slideof: 'Slide {n} de {total}', moreinfo: 'Saiba mais', goto: 'Ir para o slide', reset: 'Restaurar', play: 'Animar', pause: 'Pausar', draw: 'Sortear', add: 'Adicionar', sampleSize: 'Tamanho da amostra', check: 'Verificar', correct: 'Correto!', incorrect: 'Não é essa.', before: 'Antes', after: 'Depois', slides: 'Slides', nonotes: 'Sem notas para este slide.', total: 'Total', samples: 'amostras', mean: 'Média', sd: 'Desvio-padrão', theory: 'Normal com mesma média e σ', keys: { next: 'Próximo (também Espaço, Enter, PageDown)', prev: 'Anterior (também Backspace, PageUp)', homeend: 'Primeiro / último slide', jump: 'Digite o número e Enter para ir a um slide', o: 'Visão geral dos slides', t: 'Alternar tema claro/escuro', p: 'Trocar paleta de cores', f: 'Tela cheia', n: 'Notas do apresentador', b: 'Tela preta (apresentação)', esc: 'Fechar painéis' } },
@@ -1748,7 +1805,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
       draw();
       const sc = scopeNow();
       outBox.textContent = '';
-      outs.forEach((o, i) => { let v; try { v = o.f(sc); } catch (e) { v = NaN; } outBox.appendChild(el('div', { class: 'out hl-' + (o.color || (i % 3) + 1) }, el('span', { class: 'k' }, o.label), el('span', { class: 'v' }, PS.fmt(v, o.format || 'num', { suffix: o.suffix, currency: c.currency })))); });
+      outs.forEach((o, i) => { let v; try { v = o.f(sc); } catch (e) { v = NaN; } const kEl = el('span', { class: 'k' }, o.label); PS.decorateTerms(kEl, { force: true }); outBox.appendChild(el('div', { class: 'out hl-' + (o.color || (i % 3) + 1) }, kEl, el('span', { class: 'v' }, PS.fmt(v, o.format || 'num', { suffix: o.suffix, currency: c.currency })))); });
       if (c.insight) insight.innerHTML = M.template(c.insight, sc, defs, { lang: PS.lang, currency: c.currency });
     }
     if (S.length > 1) { const items = S.map((s, i) => ({ label: s.label || s.id, color: s.color, visible: s.visible })); legendBox.appendChild(PS.charts.legend(items, () => { items.forEach((it, i) => { S[i].visible = it.visible !== false; }); compute(); draw(); })); }
@@ -1941,7 +1998,8 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
     $$('.cards, .stats, .steps, .timeline, .stagger', s).forEach((g) => Array.from(g.children).forEach((c, k) => { if (!c.hasAttribute('data-anim')) c.setAttribute('data-anim', 'up'); c.style.setProperty('--i', k); }));
     $$('[data-anim]:not(.cards > *):not(.stats > *):not(.steps > *):not(.timeline > *):not(.stagger > *)', s).forEach((c, k) => { if (!c.style.getPropertyValue('--i')) c.style.setProperty('--i', k); });
     // elementos interativos em SVG ou não-botões precisam de teclado
-    $$('[data-detail]:not(button), [data-goto]:not(button):not(a), [data-tip]:not(button):not(a):not(input)', s).forEach((n) => { if (!n.hasAttribute('tabindex')) n.setAttribute('tabindex', '0'); if (!n.getAttribute('role')) n.setAttribute('role', 'button'); });
+    $$('[data-detail]:not(button), [data-popup]:not(button), [data-goto]:not(button):not(a), [data-tip]:not(button):not(a):not(input)', s).forEach((n) => { if (!n.hasAttribute('tabindex')) n.setAttribute('tabindex', '0'); if (!n.getAttribute('role')) n.setAttribute('role', 'button'); });
+    PS.decorateTerms(s);
     PS.initWidgets(s);
     // passos (fragmentos)
     const sts = $$('[data-step]', s);
@@ -2134,6 +2192,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
     const src = document.getElementById(id); if (!src) { console.warn('[presenter-slides] data-detail sem alvo:', id); return; }
     closeDetail(true); lastFocus = trigger || document.activeElement;
     const content = el('div', { class: 'drawer-content' }); if (src.tagName === 'TEMPLATE') content.appendChild(src.content.cloneNode(true)); else content.innerHTML = src.innerHTML;
+    enhance(content); PS.decorateTerms(content);
     const title = $('h1,h2,h3,h4', content); const tid = PS.uid('dt'); if (title) title.id = tid;
     const close = el('button', { type: 'button', class: 'tbtn close', 'aria-label': PS.t('close') }, PS.icon('x')); close.addEventListener('click', () => closeDetail());
     drawer = el('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': title ? tid : null, 'aria-label': title ? null : PS.t('moreinfo') }, close, content);
@@ -2148,10 +2207,49 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
     if (!instant && lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
+  // ícones declarativos e botões vazios em conteúdo inserido depois (painel, pop-up)
+  function enhance(root) {
+    $$('[data-icon]', root).forEach((n) => { if (!$('svg', n)) n.prepend(PS.icon(n.dataset.icon)); });
+    $$('.info-btn:empty, .goto-btn:empty', root).forEach((n) => n.appendChild(PS.icon(n.classList.contains('info-btn') ? 'info' : 'arrow-right')));
+  }
+
+  // pop-up: janela modal sobre o slide atual (mesmo slide ao fechar); aceita widgets
+  let popup = null;
+  function openPopup(id, trigger) {
+    const src = document.getElementById(id); if (!src) { console.warn('[presenter-slides] data-popup sem alvo:', id); return; }
+    closeDetail(true); closePopup(true);
+    const content = el('div', { class: 'popup-body is-active' });
+    if (src.tagName === 'TEMPLATE') content.appendChild(src.content.cloneNode(true)); else content.innerHTML = src.innerHTML;
+    enhance(content); PS.decorateTerms(content);
+    const tid = PS.uid('pp');
+    const close = el('button', { type: 'button', class: 'tbtn close', 'aria-label': PS.t('close'), title: PS.t('close') + ' (Esc)' }, PS.icon('x'));
+    const box = el('div', { class: 'popup', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': tid, 'data-size': src.dataset.size || '' },
+      el('div', { class: 'popup-head' }, el('h3', { id: tid }, src.dataset.title || ''), close), content);
+    const sc = el('div', { class: 'popup-scrim' });
+    close.addEventListener('click', () => closePopup()); sc.addEventListener('click', () => closePopup());
+    document.body.append(sc, box);
+    PS.initWidgets(content);
+    popup = { box, sc, close, trigger: trigger || document.activeElement };
+    requestAnimationFrame(() => { box.classList.add('open'); sc.classList.add('open'); close.focus({ preventScroll: true }); window.dispatchEvent(new Event('resize')); });
+  }
+  function closePopup(instant) {
+    if (!popup) return; const p = popup; popup = null; p.box.classList.remove('open'); p.sc.classList.remove('open');
+    const kill = () => { p.box.remove(); p.sc.remove(); }; if (instant) kill(); else setTimeout(kill, 320);
+    if (!instant && p.trigger && p.trigger.focus) p.trigger.focus({ preventScroll: true });
+  }
+  document.addEventListener('keydown', (e) => { // foco preso dentro do pop-up (o painel "saiba mais" fica por cima)
+    if (e.key !== 'Tab' || !popup || drawer) return;
+    const f = $$('button, a[href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])', popup.box).filter((n) => !n.disabled && n.offsetParent !== null);
+    if (!f.length) return; const first = f[0], last = f[f.length - 1];
+    if (!popup.box.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
   // tooltip simples
-  const tipEl = el('div', { class: 'tip', role: 'tooltip', hidden: true }); document.body.appendChild(tipEl);
-  function showTipFor(n) { tipEl.textContent = n.dataset.tip; tipEl.hidden = false; const r = n.getBoundingClientRect(); const w = tipEl.offsetWidth, h = tipEl.offsetHeight; tipEl.style.left = clamp(r.left + r.width / 2 - w / 2, 8, innerWidth - w - 8) + 'px'; tipEl.style.top = (r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8) + 'px'; }
-  const hideTipEl = () => { tipEl.hidden = true; };
+  const tipEl = el('div', { class: 'tip', role: 'tooltip' }); document.body.appendChild(tipEl);
+  function showTipFor(n) { tipEl.textContent = n.dataset.tip; tipEl.classList.add('on'); const r = n.getBoundingClientRect(); const w = tipEl.offsetWidth, h = tipEl.offsetHeight; tipEl.style.left = clamp(r.left + r.width / 2 - w / 2, 8, innerWidth - w - 8) + 'px'; tipEl.style.top = (r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8) + 'px'; }
+  const hideTipEl = () => { tipEl.classList.remove('on'); };
   document.addEventListener('mouseover', (e) => { const n = e.target.closest && e.target.closest('[data-tip]'); if (n) showTipFor(n); });
   document.addEventListener('mouseout', (e) => { if (e.target.closest && e.target.closest('[data-tip]')) hideTipEl(); });
   document.addEventListener('focusin', (e) => { const n = e.target.closest && e.target.closest('[data-tip]'); if (n) showTipFor(n); });
@@ -2163,13 +2261,14 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 
   // delegação de cliques: detalhes e referências
   document.addEventListener('click', (e) => {
+    const pp = e.target.closest && e.target.closest('[data-popup]'); if (pp) { e.preventDefault(); openPopup(pp.dataset.popup, pp); return; }
     const d = e.target.closest && e.target.closest('[data-detail]'); if (d) { e.preventDefault(); openDetail(d.dataset.detail, d); return; }
-    const g = e.target.closest && e.target.closest('[data-goto]'); if (g) { e.preventDefault(); if (drawer) closeDetail(true); xref(g.dataset.goto); return; }
+    const g = e.target.closest && e.target.closest('[data-goto]'); if (g) { e.preventDefault(); if (drawer) closeDetail(true); if (popup) closePopup(true); xref(g.dataset.goto); return; }
     const t = e.target.closest && e.target.closest('[data-tip]'); if (t && matchMedia('(hover: none)').matches) { showTipFor(t); setTimeout(hideTipEl, 2600); }
     if (!e.target.closest('.popover, .toolbar')) { settingsPanel.hidden = true; helpPanel.hidden = true; bSettings.setAttribute('aria-expanded', 'false'); bHelp.setAttribute('aria-expanded', 'false'); }
   });
   document.addEventListener('keydown', (e) => { // Enter/Espaço em elementos role=button que não são <button>
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-detail], [role="button"][data-goto], [role="button"][data-tip]')) { e.preventDefault(); e.target.click(); e.stopPropagation(); }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-detail], [role="button"][data-popup], [role="button"][data-goto], [role="button"][data-tip]')) { e.preventDefault(); e.target.click(); e.stopPropagation(); }
   }, true);
 
   // ====================================================================
@@ -2181,8 +2280,8 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.altKey || e.metaKey) return;
     const k = e.key; const t = e.target;
-    if (k === 'Escape') { if (drawer) closeDetail(); else if (overview) toggleOverview(false); else if (!settingsPanel.hidden || !helpPanel.hidden) { togglePopover(settingsPanel, bSettings, false); togglePopover(helpPanel, bHelp, false); } else if (blackout) toggleBlackout(); else if (t && t.blur && isInteractive(t)) t.blur(); return; }
-    if (drawer || overview) return;
+    if (k === 'Escape') { if (drawer) closeDetail(); else if (popup) closePopup(); else if (overview) toggleOverview(false); else if (!settingsPanel.hidden || !helpPanel.hidden) { togglePopover(settingsPanel, bSettings, false); togglePopover(helpPanel, bHelp, false); } else if (blackout) toggleBlackout(); else if (t && t.blur && isInteractive(t)) t.blur(); return; }
+    if (drawer || popup || overview) return;
     if (isEditable(t)) { if (k !== 'PageDown' && k !== 'PageUp') return; }
     const onRange = t && t.matches && t.matches('input[type="range"]');
     const slide = slides[cur]; const scrollable = slide.scrollHeight > slide.clientHeight + 4;
@@ -2210,11 +2309,11 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
 
   // toque: deslizar horizontalmente (fora de widgets e controles)
   let tx = 0, ty = 0, tt = 0, tOK = false;
-  document.addEventListener('touchstart', (e) => { const t = e.target; tOK = !(t.closest && t.closest('.widget, input, select, textarea, pre, .drawer, .popover, .overview, .notes-panel, .toolbar')); if (!tOK) return; const p = e.changedTouches[0]; tx = p.clientX; ty = p.clientY; tt = Date.now(); }, { passive: true });
-  document.addEventListener('touchend', (e) => { if (!tOK || drawer || overview) return; const p = e.changedTouches[0]; const dx = p.clientX - tx, dy = p.clientY - ty; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && Date.now() - tt < 900) dx < 0 ? next() : prev(); }, { passive: true });
+  document.addEventListener('touchstart', (e) => { const t = e.target; tOK = !(t.closest && t.closest('.widget, input, select, textarea, pre, .drawer, .popup, .popover, .overview, .notes-panel, .toolbar')); if (!tOK) return; const p = e.changedTouches[0]; tx = p.clientX; ty = p.clientY; tt = Date.now(); }, { passive: true });
+  document.addEventListener('touchend', (e) => { if (!tOK || drawer || popup || overview) return; const p = e.changedTouches[0]; const dx = p.clientX - tx, dy = p.clientY - ty; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && Date.now() - tt < 900) dx < 0 ? next() : prev(); }, { passive: true });
 
   // esconder interface quando o mouse fica parado (modo palco)
-  let idleT = 0; const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => { if (settingsPanel.hidden && helpPanel.hidden && !drawer && !overview) document.body.classList.add('idle'); }, 3500); };
+  let idleT = 0; const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => { if (settingsPanel.hidden && helpPanel.hidden && !drawer && !popup && !overview) document.body.classList.add('idle'); }, 3500); };
   ['mousemove', 'mousedown', 'keydown', 'touchstart'].forEach((ev) => document.addEventListener(ev, wake, { passive: true })); wake();
 
   window.addEventListener('hashchange', () => { const j = resolveTarget((location.hash || '').replace(/^#\/?/, '')); if (j >= 0 && j !== cur) go(j, { noHash: true }); });
@@ -2229,7 +2328,7 @@ select, input[type="number"] { font: 600 .88rem var(--font-body); padding: .45re
   // fórmulas (KaTeX opcional via CDN)
   window.addEventListener('load', () => { if (window.renderMathInElement) { try { window.renderMathInElement(deck, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }], throwOnError: false }); } catch (e) { /* mantém texto */ } } });
 
-  PS.deck = { go: (i) => go(i), next, prev, get index() { return cur; }, count: N, slides, setMode: (m) => { prefs.mode = m; applyPrefs(); }, setPalette: (p) => { prefs.palette = p; applyPrefs(); }, openOverview: toggleOverview, xref };
+  PS.deck = { go: (i) => go(i), next, prev, get index() { return cur; }, count: N, slides, setMode: (m) => { prefs.mode = m; applyPrefs(); }, setPalette: (p) => { prefs.palette = p; applyPrefs(); }, openOverview: toggleOverview, xref, openPopup: (id) => openPopup(id), closePopup: () => closePopup(true), get popupOpen() { return !!popup; } };
 })();
 
 </script>

@@ -169,6 +169,10 @@ svg.diagram [data-detail]:hover .dg-node, svg.diagram [data-goto]:hover .dg-node
 .xref { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .65rem; border-radius: 999px; border: 1px dashed var(--accent2); color: var(--accent2); font: 700 .8rem var(--font-body); text-decoration: none; cursor: pointer; background: transparent; }
 .xref:hover { background: color-mix(in srgb, var(--accent2) 12%, transparent); }
 .term { border-bottom: 2px dotted var(--accent); cursor: help; }
+/* Fórmulas com termos explicados: .formula (bloco) ou .fx (em linha); o glossário vem de deck.json › glossary e/ou data-terms */
+.fx { font-family: var(--font-mono); font-size: .94em; }
+.fx-term { border-bottom-style: dotted; border-radius: 2px; transition: background-color .15s; }
+.fx-term:hover, .fx-term:focus-visible { background: color-mix(in srgb, var(--accent) 14%, transparent); outline: none; }
 .hotspot-layer { position: relative; }
 .hotspot {
   position: absolute; left: var(--x, 50%); top: var(--y, 50%); transform: translate(-50%, -50%); width: 2rem; height: 2rem; border-radius: 50%; border: 0; padding: 0;

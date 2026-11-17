@@ -1,10 +1,10 @@
 # 05 · Ícones, "saiba mais" e referências cruzadas
 
 Ícones servem a duas funções: **ilustrar** (badges, cards, rótulos) e **expandir a ideia** (abrir um aprofundamento ou retomar
-outro slide). Todos vêm de um sprite embutido (76 ícones de traço, 24×24, herdam a cor do texto).
+outro slide). Todos vêm de um sprite embutido (77 ícones de traço, 24×24, herdam a cor do texto).
 
 ## Sumário
-[Usar ícones](#usar-ícones) · [Catálogo](#catálogo) · [Saiba mais](#saiba-mais-painel-lateral) · [Dicas rápidas](#dicas-rápidas-glossário) ·
+[Usar ícones](#usar-ícones) · [Catálogo](#catálogo) · [Saiba mais](#saiba-mais-painel-lateral) · [Pop-up](#pop-up-sobre-o-slide) · [Termos em fórmulas](#termos-em-fórmulas) · [Dicas rápidas](#dicas-rápidas-glossário) ·
 [Saltar entre slides](#saltar-entre-slides) · [Hotspots](#hotspots-em-figuras-e-diagramas) · [Acordeão e abas](#acordeão-e-abas) · [Acessibilidade](#acessibilidade) · [Padrões de uso](#padrões-de-uso)
 
 ## Usar ícones
@@ -21,7 +21,7 @@ O validador acusa nomes que não existem. Ícone sem sentido óbvio precisa de `
 |---|---|
 | Informação e ajuda | `info` `help` `lightbulb` `book` `notebook-pen` `graduation` `bookmark` `search` `eye` |
 | Navegação | `arrow-left` `arrow-right` `arrow-up` `arrow-down` `chevron-left` `chevron-right` `link` `external` `home` `compass` `map-pin` |
-| Ações | `play` `pause` `reset` `plus` `minus` `check` `x` `download` `settings` `maximize` `minimize` `grid` `list` `notes` `keyboard` |
+| Ações | `play` `pause` `reset` `cycle` `plus` `minus` `check` `x` `download` `settings` `maximize` `minimize` `grid` `list` `notes` `keyboard` |
 | Dados e matemática | `bar-chart` `line-chart` `pie-chart` `trending-up` `activity` `calculator` `sigma` `percent` `database` `layers` |
 | Negócios e pessoas | `target` `rocket` `flag` `star` `heart` `users` `user` `briefcase` `dollar` `shield` `lock` `mail` `globe` |
 | Ciência e tecnologia | `flask` `cpu` `code` `zap` `battery` `wrench` `thermometer` |
@@ -49,6 +49,42 @@ clique fora ou ✕, e o foco retorna ao botão.
 - `<template id>` pode ficar em qualquer lugar do slide; `id` único no deck inteiro (use prefixo `d-`).
 - O conteúdo aceita títulos, parágrafos, listas, fórmulas, imagens, **links `data-goto`** e outros `data-detail`.
 - Use para: definições, deduções, fontes, exceções, "por que isso?", casos extremos. Mantenha ≤ ~80 palavras.
+
+## Pop-up sobre o slide
+Para **explicações de cálculo, simuladores e quadros grandes** que não devem virar slides na sequência: abrem como janela sobre o slide em
+exibição e, ao fechar (✕, `Esc` ou clique fora), o espectador continua **no mesmo slide**. Aceitam texto, tabelas, fórmulas e **widgets** (`lab`, `chart`…).
+```html
+<button type="button" class="btn primary" data-popup="p-calc"><i data-icon="calculator"></i> Abrir a calculadora</button>
+<button type="button" class="xref" data-popup="p-calc">calculadora →</button>          <!-- também em frases -->
+
+<template id="p-calc" data-title="Calculadora de FS e FT" data-size="wide">           <!-- data-size="narrow" para janelas estreitas -->
+  <div class="widget" data-widget="lab" data-bare><script type="application/json">{ … }</script></div>
+</template>
+```
+- O `<template>` pode ficar em qualquer slide (basta `id` único no deck); o mesmo pop-up pode ser aberto de vários slides.
+- Dentro do pop-up valem `data-detail` (painel "saiba mais" por cima), `.term` e fórmulas com termos; um `data-goto` fecha o pop-up e salta.
+- Setas e PageUp/PageDown **não** trocam de slide enquanto o pop-up está aberto. No PDF/impressão o conteúdo do pop-up não sai (só os slides).
+- Use pop-up para o que é **consulta** (como calcular, tabela de apoio); o que sustenta o argumento da apresentação continua em slide.
+- O validador confere se cada `data-popup` tem `<template id>`.
+
+## Termos em fórmulas
+Ao passar o mouse (ou focar/tocar) sobre cada termo de uma fórmula aparece, com suavidade, o significado em linguagem simples.
+Marque a fórmula com `.formula` (bloco) ou `.fx` (em linha) e declare os termos **uma vez** em `deck.json`:
+```json
+"glossary": {
+  "LV": "Largura da vala: quanto a escavação mede no fundo, para caber o tubo com folga.",
+  "FS": "Faixa de Servidão: faixa permanente, centrada no eixo, que protege o tubo e garante acesso.",
+  "D": "Diâmetro externo real do tubo."
+}
+```
+```html
+<p class="formula">LV = D + SL + X + Y</p>
+<p>Em linha: <span class="fx">FS = LV + 2 × 0,15 m</span></p>
+<p class="formula" data-terms="0,15=Folga de proteção de cada lado da vala">FS = LV + 2 × 0,15 m</p>   <!-- termos só desta fórmula (completam/substituem o glossário) -->
+```
+- `data-terms` aceita `"A=texto; B=texto"` ou JSON; `data-terms="off"` desliga a fórmula. Vale em slides, painéis "saiba mais", pop-ups e nos **rótulos de saída** do `lab`.
+- Só entram termos inteiros (`D` não casa dentro de `DE`); termos mais longos têm prioridade. Escreva o significado em **1–2 frases**: o que é, para que serve e, se ajudar, o valor típico.
+- Cubra **todos** os símbolos e constantes relevantes das fórmulas do deck (inclusive funções como `máx` e números com significado, via `data-terms`).
 
 ## Dicas rápidas (glossário)
 ```html

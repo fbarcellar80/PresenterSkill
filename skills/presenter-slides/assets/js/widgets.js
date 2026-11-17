@@ -138,7 +138,7 @@
       draw();
       const sc = scopeNow();
       outBox.textContent = '';
-      outs.forEach((o, i) => { let v; try { v = o.f(sc); } catch (e) { v = NaN; } outBox.appendChild(el('div', { class: 'out hl-' + (o.color || (i % 3) + 1) }, el('span', { class: 'k' }, o.label), el('span', { class: 'v' }, PS.fmt(v, o.format || 'num', { suffix: o.suffix, currency: c.currency })))); });
+      outs.forEach((o, i) => { let v; try { v = o.f(sc); } catch (e) { v = NaN; } const kEl = el('span', { class: 'k' }, o.label); PS.decorateTerms(kEl, { force: true }); outBox.appendChild(el('div', { class: 'out hl-' + (o.color || (i % 3) + 1) }, kEl, el('span', { class: 'v' }, PS.fmt(v, o.format || 'num', { suffix: o.suffix, currency: c.currency })))); });
       if (c.insight) insight.innerHTML = M.template(c.insight, sc, defs, { lang: PS.lang, currency: c.currency });
     }
     if (S.length > 1) { const items = S.map((s, i) => ({ label: s.label || s.id, color: s.color, visible: s.visible })); legendBox.appendChild(PS.charts.legend(items, () => { items.forEach((it, i) => { S[i].visible = it.visible !== false; }); compute(); draw(); })); }

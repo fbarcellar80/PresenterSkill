@@ -152,6 +152,7 @@ Só cite frases/fontes que você tem certeza; senão, parafraseie ou peça a fon
 <p class="formula">M = C · (1 + i)<sup>n</sup></p>        <!-- texto simples, monoespaçado -->
 <pre><code>def f(x):\n    return x ** 2</code></pre>
 ```
+Para que cada termo mostre o significado ao passar o mouse, use `.formula` (bloco) ou `<span class="fx">` (em linha) + `glossary` no `deck.json` (veja `05-icons-and-crossrefs.md`).
 Para fórmulas tipográficas completas ative KaTeX (`"katex": true` em `deck.json`) e escreva `$$ \int_a^b f(x)\,dx $$` ou `\( x^2 \)`. Veja `06-visuals-media-math.md`.
 
 ## Figura com legenda
